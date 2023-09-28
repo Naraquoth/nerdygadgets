@@ -10,16 +10,16 @@ $databaseConnection = connectToDatabase();
     <title>NerdyGadgets</title>
 
     <!-- Javascript -->
-    <script src="Public/JS/fontawesome.js"></script>
-    <script src="Public/JS/jquery.min.js"></script>
-    <script src="Public/JS/bootstrap.min.js"></script>
-    <script src="Public/JS/popper.min.js"></script>
-    <script src="Public/JS/resizer.js"></script>
+    <script src="Pub/JS/fontawesome.js"></script>
+    <script src="Pub/JS/jquery.min.js"></script>
+    <script src="Pub/JS/bootstrap.min.js"></script>
+    <script src="Pub/JS/popper.min.js"></script>
+    <script src="Pub/JS/resizer.js"></script>
 
     <!-- Style sheets-->
-    <link rel="stylesheet" href="Public/CSS/style.css" type="text/css">
-    <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="Public/CSS/typekit.css">
+    <link rel="stylesheet" href="Pub/CSS/style.css" type="text/css">
+    <link rel="stylesheet" href="Pub/CSS/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="Pub/CSS/typekit.css">
 </head>
 <body>
 <div class="Background">
