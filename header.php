@@ -25,7 +25,9 @@ $databaseConnection = connectToDatabase();
 <div class="Background">
     <div class="row" id="Header">
         <div class="col-2"><a href="./" id="LogoA">
-                <div id="LogoImage"></div>
+                <div id="LogoImage">
+                    <img src="Pub/img/logo.png" alt="NerdyGadgetsLogo" height="100%" width="auto" style=" margin-left: auto; margin-right: auto;" >
+                </div>
             </a></div>
         <div class="col-8" id="CategoriesBar">
             <ul id="ul-class">
