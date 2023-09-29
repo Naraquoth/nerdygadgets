@@ -15,6 +15,7 @@ $databaseConnection = connectToDatabase();
     <script src="Pub/JS/bootstrap.min.js"></script>
     <script src="Pub/JS/popper.min.js"></script>
     <script src="Pub/JS/resizer.js"></script>
+    <link rel="icon" type="image/png" href="Pub/img/logo.png" />
 
     <!-- Style sheets-->
     <link rel="stylesheet" href="Pub/CSS/style.css" type="text/css">
