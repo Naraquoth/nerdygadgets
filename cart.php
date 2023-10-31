@@ -1,12 +1,12 @@
 <?php
 
 include __DIR__ . "/header.php";
-include "cartfuncties.php";
 
 $cart = getCart();
 if (isset($_POST['delete-item'])) {
     unset($cart[$_POST['d-item']]);
     saveCart($cart);
+    header("Location: cart.php");
 }
 if (isset($_POST['delete'])) {
     session_destroy();

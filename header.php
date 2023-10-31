@@ -3,6 +3,7 @@
 session_start();
 include "database.php";
 $databaseConnection = connectToDatabase();
+include "cartfuncties.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +54,9 @@ $databaseConnection = connectToDatabase();
         <ul id="ul-class-navigation">
             <li>
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
+            </li>
+            <li>
+                <a href="cart.php" class="HrefDecoration"><i class="fa fa-shopping-cart"></i> Cart <?php print(count(getCart())) ?></a>
             </li>
         </ul> 
 <!-- einde code voor US3 zoeken -->
