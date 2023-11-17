@@ -6,6 +6,7 @@ include __DIR__ . "/header.php";
 $StockItem = getStockItem($_GET['id'], $databaseConnection);
 $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 ?>
+
 <div id="CenteredContent">
     <?php
     if ($StockItem != null) {
@@ -77,7 +78,7 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
             <h2 class="StockItemNameViewSize StockItemName">
                 <?php print $StockItem['StockItemName']; ?>
             </h2>
-            <div class="QuantityText"><?php print $StockItem['QuantityOnHand']; ?></div>
+            <div class="QuantityText">Aantal producten op vooraad: <?php echo explode(" ", $StockItem['QuantityOnHand'])[1] ?></div>
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
@@ -85,7 +86,7 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                         <h6> Inclusief BTW </h6>
                         <form method="post">
                             <input type="number" name="stockItemID" value="<?php print($_GET['id']) ?>" hidden>
-                            <input type="submit" name="submit" value="Voeg toe aan winkelmandje">
+                            <button class=" mt-4" type="submit" name="submit" value="Voeg toe aan winkelmandje">Voeg toe aan <i class="fa fa-shopping-cart"></i></button>
                         </form>
                         <?php
                             if (isset($_POST["submit"])) {              // zelfafhandelend formulier

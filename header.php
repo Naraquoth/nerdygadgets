@@ -11,7 +11,9 @@ include "cartfuncties.php";
     <title>NerdyGadgets</title>
 
     <!-- Javascript -->
-    <script src="Pub/JS/fontawesome.js"></script>
+    <!-- <script src="Pub/JS/fontawesome.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="Pub/JS/jquery.min.js"></script>
     <script src="Pub/JS/bootstrap.min.js"></script>
     <script src="Pub/JS/popper.min.js"></script>
@@ -22,6 +24,7 @@ include "cartfuncties.php";
     <link rel="stylesheet" href="Pub/CSS/style.css" type="text/css">
     <link rel="stylesheet" href="Pub/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Pub/CSS/typekit.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 <div class="Background">
