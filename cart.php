@@ -5,11 +5,8 @@ include __DIR__ . "/header.php";
 $cart = getCart();
 if (isset($_POST['edit-item'])) {
   switch ($_POST['edit-item']) {
-    case 'plus':
-      $cart[$_POST['e-item']]++;
-      break;
-    case 'minus':
-      $cart[$_POST['e-item']]--;
+    case 'change':
+      $cart[$_POST['e-item']] = $_POST['e-item-aantal'];
       if ($cart[$_POST['e-item']] <= 0) {
         unset($cart[$_POST['e-item']]);
       }
@@ -49,12 +46,12 @@ foreach($cart as $i => $aantal){
     $totaalPrijs+= $StockItem['SellPrice'] * $aantal;
     
     ?>
-    <form method='post' class="grid grid-cols-8 p-4 h-fit w-full">
-    <div class="flex flex-row gap-4 col-span-6">
+    <form method='post' class="grid xl:grid-cols-8 grid-cols-6 p-4 gap-4 h-fit w-full">
+    <div class="flex flex-row gap-4 col-span-4 xl:col-span-6 cursor-pointer" onclick="window.location.href ='<?php echo '/view.php?id='.$i ?>'">
       <div id="ImageFrame"
       class="!w-32 !h-32"
                      style="background-image: url('<?php echo $StockItemImage; ?>'); background-size: cover;">
-                     <input type='number' name='e-item' value='<?php echo $i ?>' hidden>
+                     
       </div>
       <div class="flex flex-col w-fit h-full">
         <p class="text-white text-m"><?php echo $StockItem['StockItemID'] ?></p>
@@ -64,13 +61,16 @@ foreach($cart as $i => $aantal){
     </div>
     <div>
       <p class="text-white text-xl">Aantal</p>
-      <p class="text-white text-xl"><?php echo $aantal ?></p>
-        <button type='submit' name='edit-item' value='plus'>
-          <i class="fa fa-solid fa-plus text-2xl"></i>
-        </button>
-        <button type='submit' name='edit-item' value='minus'>
-          <i class="fa fa-solid fa-minus text-2xl"></i>
-        </button>
+      <!-- <p class="text-white text-xl"><?php echo $aantal ?></p> -->
+      <input type='number' name='e-item' value='<?php echo $i ?>' hidden>
+      <input type='number' name='e-item-aantal' id="e-item-aantal-<?php echo $i ?>" class=" bg-transparent text-white text-xl" value='<?php echo $aantal ?>' >
+      <button type='submit' name='edit-item' id="edit-item-<?php echo $i ?>" hidden></button>
+        <script>
+        document.getElementById('e-item-aantal-<?php echo $i ?>').addEventListener('change', function(){
+          document.getElementById('edit-item-<?php echo $i ?>').value = 'change';
+          document.getElementById('edit-item-<?php echo $i ?>').click();
+        });
+      </script>
     </div>
     <div>
       <p class="text-white text-xl">Prijs</p>
@@ -85,7 +85,10 @@ foreach($cart as $i => $aantal){
 }
 ?>
 </div>
-
+<div class="text-right text-white pb-4">
+  <p class="text-2xl font-medium">Totaal prijs</p>
+  <p class="text-xl"><?php echo sprintf("€ %.2f", $totaalPrijs) ?></p>
+</div>
 <!-- <form method="post">
     <input type="submit" name="delete-shopping-list-session" value="Winkelwagen leegmaken." class="text-left w-fit">
 </form> -->
