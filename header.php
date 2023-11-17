@@ -3,6 +3,7 @@
 session_start();
 include "database.php";
 $databaseConnection = connectToDatabase();
+include "cartfuncties.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,9 @@ $databaseConnection = connectToDatabase();
     <title>NerdyGadgets</title>
 
     <!-- Javascript -->
-    <script src="Pub/JS/fontawesome.js"></script>
+    <!-- <script src="Pub/JS/fontawesome.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="Pub/JS/jquery.min.js"></script>
     <script src="Pub/JS/bootstrap.min.js"></script>
     <script src="Pub/JS/popper.min.js"></script>
@@ -21,6 +24,7 @@ $databaseConnection = connectToDatabase();
     <link rel="stylesheet" href="Pub/CSS/style.css" type="text/css">
     <link rel="stylesheet" href="Pub/CSS/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="Pub/CSS/typekit.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 <div class="Background">
@@ -53,6 +57,9 @@ $databaseConnection = connectToDatabase();
         <ul id="ul-class-navigation">
             <li>
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
+            </li>
+            <li>
+                <a href="cart.php" class="HrefDecoration"><i class="fa fa-shopping-cart"></i> Cart <?php print(array_sum(getCart())) ?></a>
             </li>
         </ul> 
 <!-- einde code voor US3 zoeken -->
