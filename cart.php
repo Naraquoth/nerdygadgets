@@ -35,6 +35,9 @@ $totaalPrijs = 0;
 //totaal prijs berekenen
 //mooi weergeven in html
 //etc.
+if (count($cart)  == 0){
+  echo "<p class='my-4 text-xl'>Winkelwagen is leeg.</p>";
+}
 foreach($cart as $i => $aantal){
     $StockItem = getStockItem($i, $databaseConnection);
     $StockItemImage = getStockItemImage($i, $databaseConnection);
@@ -85,13 +88,18 @@ foreach($cart as $i => $aantal){
 }
 ?>
 </div>
-<div class="text-right text-white pb-4">
-  <p class="text-2xl font-medium">Totaal prijs</p>
-  <p class="text-xl"><?php echo sprintf("€ %.2f", $totaalPrijs) ?></p>
+<div class="grid grid-cols-2">
+  <div>
+  <form method="post">
+      <input type="submit" name="delete-shopping-list-session" value="Winkelwagen leegmaken." class="text-left w-fit">
+  </form>
+  </div>
+  <div class="text-right text-white pb-4">
+    <p class="text-2xl font-medium">Totaal prijs</p>
+    <p class="text-xl"><?php echo sprintf("€ %.2f", $totaalPrijs) ?></p>
+  </div>
 </div>
-<!-- <form method="post">
-    <input type="submit" name="delete-shopping-list-session" value="Winkelwagen leegmaken." class="text-left w-fit">
-</form> -->
+
 
 </div>
 
