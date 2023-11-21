@@ -2,27 +2,32 @@
 
 include __DIR__ . "/header.php";
 
+// haal alle items uit de winkelwagen op
 $cart = getCart();
+
+// als je de winkelwagen aan past (aantal veranderen of verwijderen)
 if (isset($_POST['edit-item'])) {
   switch ($_POST['edit-item']) {
-    case 'change':
-      $cart[$_POST['e-item']] = $_POST['e-item-aantal'];
-      if ($cart[$_POST['e-item']] <= 0) {
-        unset($cart[$_POST['e-item']]);
+    case 'change': // waneer je het aantal veranderd
+      $cart[$_POST['e-item']] = $_POST['e-item-aantal']; // verander het aantal in de winkelwagen array
+      if ($cart[$_POST['e-item']] <= 0) { // als het aantal 0 of minder is
+        unset($cart[$_POST['e-item']]); // verwijder het item uit de winkelwagen array
       }
       break;
-    case 'delete':
-      unset($cart[$_POST['e-item']]);
+    case 'delete': // waneer je een item verwijderd
+      unset($cart[$_POST['e-item']]); // verwijder het item uit de winkelwagen array
       break;
   }
-    saveCart($cart);
-    header("Location: cart.php");
+    saveCart($cart); // sla de winkelwagen op
+    header("Location: cart.php"); // refresh de pagina
 }
+
+// als je de winkelwagen leeg maakt
 if (isset($_POST['delete-shopping-list-session'])) {
-    session_destroy();
-    header("Location: cart.php");
+    session_destroy();  // verwijder de sessie
+    header("Location: cart.php"); // refresh de pagina
 }
-$totaalPrijs = 0;
+$totaalPrijs = 0; // maak een variable aan voor de totaal prijs
 ?>
 
 <div id="CenteredContent">
@@ -39,13 +44,14 @@ if (count($cart)  == 0){
   echo "<p class='my-4 text-xl'>Winkelwagen is leeg.</p>";
 }
 foreach($cart as $i => $aantal){
-    $StockItem = getStockItem($i, $databaseConnection);
-    $StockItemImage = getStockItemImage($i, $databaseConnection);
-    if (isset($StockItemImage[0]['ImagePath'])){
-      $StockItemImage = "Pub/StockItemIMG/" . $StockItemImage[0]['ImagePath'];
+    $StockItem = getStockItem($i, $databaseConnection); // opvragen van de stockitem gegevens
+    $StockItemImage = getStockItemImage($i, $databaseConnection); // opvragen van de stockitem image gegevens lijst
+    if (isset($StockItemImage[0]['ImagePath'])){  // als er een lijst met images aanwezig is?
+      $StockItemImage = "Pub/StockItemIMG/" . $StockItemImage[0]['ImagePath']; // pak de eerste image
     } else {
-      $StockItemImage = "Pub/StockGroupIMG/" . $StockItem['BackupImagePath'];
+      $StockItemImage = "Pub/StockGroupIMG/" . $StockItem['BackupImagePath']; // anders pak de backup image
     }
+
     $totaalPrijs+= $StockItem['SellPrice'] * $aantal;
     
     ?>
