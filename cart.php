@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . "/header.php";
+include __DIR__ . "/components/header.php";
 
 // haal alle items uit de winkelwagen op
 $cart = getCart();
@@ -108,6 +108,10 @@ foreach($cart as $i => $aantal){
 
 
 </div>
+
+<?php 
+include __DIR__ . "/components/footer.php";
+?>
 
 
 

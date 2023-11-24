@@ -1,7 +1,7 @@
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <!-- dit bestand bevat alle code voor het productoverzicht -->
 <?php
-include __DIR__ . "/header.php";
+include __DIR__ . "/components/header.php";
 
 $ReturnableResult = null;
 $Sort = "SellPrice";
@@ -333,5 +333,5 @@ if (isset($amount)) {
 </div>
 
 <?php
-include __DIR__ . "/footer.php";
+include __DIR__ . "/components/footer.php";
 ?>

@@ -1,9 +1,9 @@
 <!-- de inhoud van dit bestand wordt bovenaan elke pagina geplaatst -->
 <?php
 session_start();
-include "database.php";
+require_once "./lib/database.php";
 $databaseConnection = connectToDatabase();
-include "cartfuncties.php";
+include "./lib/cartfuncties.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
