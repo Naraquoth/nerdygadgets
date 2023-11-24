@@ -3,3 +3,5 @@
 vendor/
 */tempCodeRunnerFile.php
 tailwind.config.js
+.DS_Store
+*/.DS_Store
