@@ -14,8 +14,9 @@ require_once "./lib/database.php";
         // 2. maak een customer aan
         // reload page met header
         
-        $people = createNewPeople($_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
-        print_r($people);
+        $people_id = createNewPeople($_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
+        $_SESSION["userID"] = $people_id;
+        $customer_id = createNewCustomer($people_id, $_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
     }
 
     if (isset($_POST["email-submit"]) || isset($_SESSION["email"])){
