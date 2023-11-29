@@ -8,6 +8,13 @@ require_once "./lib/database.php";
         print_r($_SESSION);
     }
 
+    if(isset($_POST["register-submit"])){
+        // Array ( [voornaam] => jan [achternaam] => jhony [telefoonnummer] => 068527224 [zip] => 1239 XH [huisnummer] => 22 [straatnaam] => delta [woonplaats] => huizen [register-submit] => Volgende )
+        // 1. maak people aan
+        // 2. maak een customer aan
+        // reload page met header
+    }
+
     if (isset($_POST["email-submit"]) || isset($_SESSION["email"])){
         if (isset($_POST["email"])){
             $_SESSION["email"] = $_POST["email"];

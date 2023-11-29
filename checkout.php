@@ -18,7 +18,6 @@ if (count($cart) == 0){
 <div class="w-full grid grid-cols-5 gap-4">
     <div class=" col-span-3">
         <?php
-        $_SESSION["UserID"] = 3003; 
         if (!isset($_SESSION["UserID"])){
             require_once "./components/account.php";
         } else {
