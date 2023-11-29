@@ -133,9 +133,10 @@ function createNewPeople($personName, $emailAddress, $password, $validatePasswor
 
 function getCustomerByPeopleID($id, $databaseConnection) {
     $Query = "
-                SELECT CustomerID, CustomerName, 
-                FROM `customers` 
-                WHERE `PrimaryContactPersonID` = ?";
+    SELECT *
+    FROM customers AS CU
+    join cities AS CI ON CU.DeliveryCityID = CityID
+    WHERE CU.PrimaryContactPersonID = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "i", $id);

@@ -12,4 +12,4 @@ $databaseConnection = connectToDatabase();
 $customer = getCustomerByPeopleID($_SESSION["UserID"], $databaseConnection);
 
 
-
+print_r($customer);
