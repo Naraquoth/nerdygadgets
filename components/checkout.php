@@ -6,10 +6,8 @@ require_once "./lib/database.php";
 // 3 order details aanmaken
 // bestelling afronden
 
-echo "test";
 $databaseConnection = connectToDatabase();
 
-$customer = getCustomerByPeopleID($_SESSION["UserID"], $databaseConnection);
+$customer = getCustomerByPeopleID($_SESSION["UserID"], $databaseConnection)[0];
 
-
-print_r($customer);
+require_once "./components/checkoutForms/customerDetails.php";
