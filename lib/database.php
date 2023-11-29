@@ -152,11 +152,10 @@ function getCustomerByPeopleID($id, $databaseConnection) {
 function createNewCustomer($peopleID, $personName, $emailAddress, $phoneNumber, $databaseConnection) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $Query = "
-                INSERT INTO `people` 
-                (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, 
-                `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
+                INSERT INTO `customers` 
+                (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `BuyingGroupID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`)
                 VALUES 
-                (?, ?, ?, 0, 'NO LOGON', 0, NULL, 0, 0, 0, NULL, ?, NULL, ?, NULL, NULL, NULL, 1, ?, '9999-12-31 23:59:59.000000')";
+                ('', '', '', NULL, '', NULL, '', '', '', NULL, '', '', '', '', '', '', '', NULL, NULL, '', '', NULL, '', NULL, '', NULL, '', '', '2023-11-29 12:07:13.000000', '2023-11-29 12:07:13.000000')";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
