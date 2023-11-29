@@ -16,7 +16,9 @@ require_once "./lib/database.php";
         
         $people_id = createNewPeople($_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
         $_SESSION["userID"] = $people_id;
-        $customer_id = createNewCustomer($people_id, $_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
+        $customer_id = createNewCustomer($people_id, $_POST["full-name"], $_POST["telefoonnummer"], $_POST["huisnummer"], $_POST["straatnaam"], $_POST["zip"] , $databaseConnection);
+        $_SESSION["customerID"] = $customer_id;
+        print_r($_SESSION);
     }
 
     if (isset($_POST["email-submit"]) || isset($_SESSION["email"])){
