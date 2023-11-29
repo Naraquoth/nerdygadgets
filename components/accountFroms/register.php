@@ -1,6 +1,4 @@
-<form method="post" class="[&>input]:text-black">
-    <!-- klant gegevnes -->
-    <label for="email">Email-Address</label>
+    <!-- klant gegevnes -->    <label for="email">Email-Address</label>
     <input type="email" name="email" disabled value="<?php echo $_SESSION["email"]?>">
     <label for="full-name">Voledige Naam</label>
     <input type="text" name="full-name">
@@ -18,4 +16,3 @@
 
     <button type="submit" name="terug-submit" value="Volgende">Terug</button>
     <button type="submit" name="register-submit" value="Volgende">Volgende</button>
-</form>

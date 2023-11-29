@@ -152,26 +152,27 @@ function getCustomerByPeopleID($id, $databaseConnection) {
 function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode,  $databaseConnection) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $date = date("Y-m-d");
-    $Query = "SET SESSION foreign_key_checks=OFF;";
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_execute($Statement);
     // customerCategoryID needs to be changed
+
+    //BillToCustomerID is nulleble gemaakt om de customerID te kunnen gebruiken als foreign key
     $Query = "
                 INSERT INTO `customers` 
                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `BuyingGroupID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`)
                 VALUES 
-                (?, CustomerID, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')
-                SET FOREIGN_KEY_CHECKS=1;";
+                (?, null, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
                 
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     $Statement->bind_param("sisssssssss", $personName, $peopleID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
     mysqli_stmt_execute($Statement);
     $insertid = mysqli_insert_id($databaseConnection);
-
-    $Query = "SET SESSION foreign_key_checks=ON;";
+    $Query = "SET @newCustomerID = LAST_INSERT_ID()";
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_execute($Statement);
+    $Query = "UPDATE customers SET BillToCustomerID = @newCustomerID WHERE customerID = @newCustomerID";
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_execute($Statement);
+    
     return $insertid;
 }
 

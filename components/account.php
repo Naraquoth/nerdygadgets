@@ -17,8 +17,7 @@ require_once "./lib/database.php";
         $people_id = createNewPeople($_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
         $_SESSION["userID"] = $people_id;
         $customer_id = createNewCustomer($people_id, $_POST["full-name"], $_POST["telefoonnummer"], $_POST["huisnummer"], $_POST["straatnaam"], $_POST["zip"] , $databaseConnection);
-        $_SESSION["customerID"] = $customer_id;
-        print_r($_SESSION);
+        header("Location: checkout.php"); // refresh de pagina
     }
 
     if (isset($_POST["email-submit"]) || isset($_SESSION["email"])){
@@ -30,7 +29,9 @@ require_once "./lib/database.php";
             require_once "./components/accountFroms/register.php";
         }
         else {
-            require_once "./components/accountFroms/password.php";
+            $_SESSION["userID"] = $accountByEmail[0]["PersonID"];
+            header("Location: checkout.php"); // refresh de pagina
+            // require_once "./components/accountFroms/password.php";
         }
 
     } else {

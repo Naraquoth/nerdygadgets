@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "./vendor/autoload.php";
+require_once "./vendor/autoload.php";
 $_ENV = parse_ini_file('.env');
 
 $mollie = new \Mollie\Api\MollieApiClient();
@@ -12,19 +12,23 @@ function getIssuers() {
     return $issuers;
 }
 
-function createPayment($amount, $description, $selectedIssuerId, $orderId) {
+function createPayment($amount, $selectedIssuerId, $orderId) {
     global $mollie;
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
             "value" => "$amount"
         ],
-        "description" => "$description",
-        "redirectUrl" => $_ENV["WEB_URL"] . "/payment/success.php?order_id=" . $orderId,
+        "method" => \Mollie\Api\Types\PaymentMethod::IDEAL,
+        "description" => "Order #{$orderId}",
+        "redirectUrl" => $_ENV["WEB_URL"] . "/payment/success.php?order=" . $orderId,
         "webhookUrl"  => $_ENV["WEB_URL"] . "/payment/webhook.php",
-        "method"      => \Mollie\Api\Types\PaymentMethod::IDEAL,
-        "issuer"      => $selectedIssuerId, // e.g. "ideal_INGBNL2A"
+        "metadata" => [
+            "order_id" => $orderId,
+        ],
+        
+        "issuer" => ! empty($selectedIssuerId) ? $selectedIssuerId : null,
     ]);
-    return $payment->getCheckoutUrl();
+    return $payment;
 }
 

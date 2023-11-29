@@ -8,6 +8,22 @@ require_once "./lib/database.php";
 
 $databaseConnection = connectToDatabase();
 
-$customer = getCustomerByPeopleID($_SESSION["UserID"], $databaseConnection)[0];
+$customer = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
 
-require_once "./components/checkoutForms/customerDetails.php";
+if (isset($_POST["pay-submit"])){
+    require_once "./lib/betaalfuncties.php";
+    $amount = number_format($totaalPrijs, 2, '.', ''); // maak een variable aan voor de totaal prijs en zet het in het juiste formats
+    
+    // create order
+
+    $payment = createPayment($amount, $_POST["issuer"], 0001);
+
+    header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    
+
+} else {
+    require_once "./components/checkoutForms/idealForm.php";
+    echo "<br><br>";
+    require_once "./components/checkoutForms/customerDetails.php";
+    echo "<br><br>";
+}
