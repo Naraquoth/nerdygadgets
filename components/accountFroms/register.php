@@ -2,10 +2,8 @@
     <!-- klant gegevnes -->
     <label for="email">Email-Address</label>
     <input type="email" name="email" disabled value="<?php echo $_SESSION["email"]?>">
-    <label for="voornaam">Voornaam</label>
-    <input type="text" name="voornaam">
-    <label for="achternaam">Achternaam</label>
-    <input type="text" name="achternaam">
+    <label for="full-name">Voledige Naam</label>
+    <input type="text" name="full-name">
     <label for="telefoonnummer">Telefoonnummer</label>
     <input type="text" name="telefoonnummer">
     <!-- verzend gegevens -->

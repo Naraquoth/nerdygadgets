@@ -133,7 +133,7 @@ function createNewPeople($personName, $emailAddress, $password, $validatePasswor
 
 function getCustomerByPeopleID($id, $databaseConnection) {
     $Query = "
-    SELECT *
+    SELECT CU.CustomerID, CU.CustomerName, CU.PhoneNumber, CU.PostalPostalCode, CU.DeliveryAddressLine1, CU.DeliveryAddressLine2, CI.CityName
     FROM customers AS CU
     join cities AS CI ON CU.DeliveryCityID = CityID
     WHERE CU.PrimaryContactPersonID = ?";
