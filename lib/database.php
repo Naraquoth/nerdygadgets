@@ -149,19 +149,20 @@ function getCustomerByPeopleID($id, $databaseConnection) {
     return $Customer;
 }
 
-function createNewCustomer($peopleID, $personName, $emailAddress, $phoneNumber, $databaseConnection) {
+function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode,  $databaseConnection) {
     $dateTimeNow = date("Y-m-d H:i:s");
+    $date = date("Y-m-d");
+    // customerCategoryID needs to be changed
     $Query = "
                 INSERT INTO `customers` 
                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `BuyingGroupID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`)
                 VALUES 
-                ('', '', '', NULL, '', NULL, '', '', '', NULL, '', '', '', '', '', '', '', NULL, NULL, '', '', NULL, '', NULL, '', NULL, '', '', '2023-11-29 12:07:13.000000', '2023-11-29 12:07:13.000000')";
+                (?, CustomerID, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
+    $Statement->bind_param("sisssssssss", $personName, $peopleID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
     mysqli_stmt_execute($Statement);
-    $Result = mysqli_stmt_get_result($Statement);
-    return $Result;
+    return mysqli_insert_id($databaseConnection);
 }
 
 
