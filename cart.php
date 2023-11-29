@@ -109,7 +109,7 @@ foreach($cart as $i => $aantal){
 if (count($cart) !== 0){
 ?>
 <div class="flex flex-row justify-end">
-  <button class="bg-white text-black text-xl px-4 py-2 rounded-md" onclick="window.location.href = '/checkout.php'">Afrekenen</button>
+  <button class="bg-white text-black text-xl px-4 py-2 rounded-md" onclick="window.location.href = '<?php echo $_ENV['WEB_URL'].'/checkout.php'?>'">Afrekenen</button>
 </div>
 <?php
 }

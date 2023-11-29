@@ -133,7 +133,7 @@ function createNewPeople($personName, $emailAddress, $password, $validatePasswor
 
 function getCustomerByPeopleID($id, $databaseConnection) {
     $Query = "
-                SELECT CustomerID, CustomerName
+                SELECT CustomerID, CustomerName, 
                 FROM `customers` 
                 WHERE `PrimaryContactPersonID` = ?";
 

@@ -17,15 +17,12 @@ if (count($cart) == 0){
 
 <div class="w-full grid grid-cols-5 gap-4">
     <div class=" col-span-3">
-        <?php 
+        <?php
+        $_SESSION["UserID"] = 3003; 
         if (!isset($_SESSION["UserID"])){
             require_once "./components/account.php";
         } else {
-            // laat checkout formulier zien
-            // 1 customer gegevens ophalen en juiste customer selecteren of nieuwe aan maken.
-            // 2 order aanmaken
-            // 3 order details aanmaken
-            // bestelling afronden
+            require_once "./components/checkout.php";
         }
         ?>
     </div>
@@ -37,7 +34,7 @@ if (count($cart) == 0){
                 $prijs = $StockItem['SellPrice'] * $aantal;
                 $totaalPrijs+= $prijs;
             ?>
-            <div class="cursor-pointer" onclick="window.location.href ='<?php echo '/view.php?id='.$i ?>'">
+            <div class="cursor-pointer" onclick="window.location.href ='<?php echo $_ENV['WEB_URL'].'/view.php?id='.$i ?>'">
                 <p class="text-xl font-medium">Product: <?php echo $StockItem['StockItemName']; ?></p>
                 <p class="text-lg font-medium">Aantal: <?php echo $aantal ?></p>
                 <p class="text-lg font-medium">Prijs: <?php echo sprintf("€ %.2f", $prijs) ?></p>
