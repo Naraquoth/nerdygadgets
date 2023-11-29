@@ -59,6 +59,8 @@ function getStockItem($id, $databaseConnection) {
     $Query = " 
            SELECT SI.StockItemID, 
             (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+            TaxRate,
+            RecommendedRetailPrice,
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails, 
@@ -96,4 +98,97 @@ function getStockItemImage($id, $databaseConnection) {
     $R = mysqli_fetch_all($R, MYSQLI_ASSOC);
 
     return $R;
+}
+
+function getPeopleByEmail($emailAddress, $databaseConnection) {
+    $Query = "
+                SELECT PersonID, EmailAddress
+                FROM people
+                WHERE EmailAddress = ? 
+                LIMIT 1";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "s", $emailAddress);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $People = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $People;
+}
+
+function createNewPeople($personName, $emailAddress, $password, $validatePassword, $databaseConnection) {
+    $Query = "
+                INSERT INTO `people` 
+                (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
+                VALUES 
+                ('', '', '', 0, '', 0, '', 0, 0, 0, '', '', '', ?, NULL, '', '', 1, CURRENT_TIMESTAMP, '9999-12-31 23:59:59.997')";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "s", $emailAddress);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    return $Result;
+}
+
+// Users
+
+function getCustomerByPeopleID($id, $databaseConnection) {
+    $Query = "
+                SELECT CustomerID, CustomerName
+                FROM `customers` 
+                WHERE `PrimaryContactPersonID` = ?";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Customer = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Customer;
+}
+
+// function createNewCustomerUnderPeopleID($id, $databaseConnection) {
+//     $Query = "
+//                 INSERT INTO `customers` 
+//                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
+//                 VALUES 
+//                 ('', NULL, NULL, ?, NULL, 1, NULL, NULL, 0.00, CURRENT_TIMESTAMP, 0.00, 0, 0, 0, '', '', NULL, NULL, '', '', '', '', '', '', '', '', 1, CURRENT_TIMESTAMP, '9999-12-31 23:59:59.997')";
+
+//     $Statement = mysqli_prepare($databaseConnection, $Query);
+//     mysqli_stmt_bind_param($Statement, "i", $id);
+//     mysqli_stmt_execute($Statement);
+//     $Result = mysqli_stmt_get_result($Statement);
+//     return $Result;
+// }
+
+// Customers
+
+function getOrderByCustomerId($id, $databaseConnection) {
+    $Query = "
+                SELECT OrderID, BackorderOrderID, OrderDate, ExpectedDeliveryDate 
+                FROM `orders`
+                WHERE `CustomerID` = ?";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Order = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Order;
+}
+
+
+// Orders
+
+function getOrderDetailsByOrderId($id, $databaseConnection) {
+    $Query = "
+                SELECT ol.StockItemID, si.StockItemName, ol.Quantity, ol.UnitPrice, ol.TaxRate, ol.PickedQuantity, ((ol.UnitPrice*(1+(ol.TaxRate/100)))*ol.PickedQuantity) AS TotalItemPrice
+                FROM `orderlines` AS ol
+                JOIN `stockitems` AS si ON ol.StockItemID = si.StockItemID
+                WHERE ol.OrderID = ?";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $OrderDetails = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $OrderDetails;
 }

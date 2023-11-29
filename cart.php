@@ -105,7 +105,15 @@ foreach($cart as $i => $aantal){
     <p class="text-xl"><?php echo sprintf("€ %.2f", $totaalPrijs) ?></p>
   </div>
 </div>
-
+<?php 
+if (count($cart) !== 0){
+?>
+<div class="flex flex-row justify-end">
+  <button class="bg-white text-black text-xl px-4 py-2 rounded-md" onclick="window.location.href = '/checkout.php'">Afrekenen</button>
+</div>
+<?php
+}
+?>
 
 </div>
 

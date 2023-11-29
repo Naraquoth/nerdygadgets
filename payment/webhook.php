@@ -11,7 +11,7 @@ try {
      *
      * See: https://www.mollie.com/dashboard/developers/api-keys
      */
-    require "../initialize.php";
+    require "./lib/betaalfuncties.php";
 
     /*
      * Retrieve the payment's current state.

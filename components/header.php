@@ -3,7 +3,7 @@
 session_start();
 require_once "./lib/database.php";
 $databaseConnection = connectToDatabase();
-include "./lib/cartfuncties.php";
+require_once "./lib/cartfuncties.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
