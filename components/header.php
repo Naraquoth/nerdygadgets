@@ -59,7 +59,7 @@ require_once "./lib/cartfuncties.php";
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
             </li>
             <li>
-                <a href="cart.php" class="HrefDecoration"><i class="fa fa-shopping-cart"></i> Cart <?php print(array_sum(getCart())) ?></a>
+                <a href="cart.php" class="HrefDecoration"><i class="fa fa-shopping-cart search"></i> Cart <?php print(array_sum(getCart())) ?></a>
             </li>
         </ul> 
 <!-- einde code voor US3 zoeken -->

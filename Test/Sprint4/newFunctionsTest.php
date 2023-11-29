@@ -18,7 +18,7 @@ echo "\n";
 
 $orders = getOrderByCustomerId($customer[0]["CustomerID"],$databaseConnection);
 
-print_r($orders[0]);
+print_r($orders[count($orders) - 1]);
 
 echo "\n";
 
