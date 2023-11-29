@@ -100,6 +100,8 @@ function getStockItemImage($id, $databaseConnection) {
     return $R;
 }
 
+// Users account.
+
 function getPeopleByEmail($emailAddress, $databaseConnection) {
     $Query = "
                 SELECT PersonID, EmailAddress
@@ -115,21 +117,23 @@ function getPeopleByEmail($emailAddress, $databaseConnection) {
     return $People;
 }
 
-function createNewPeople($personName, $emailAddress, $password, $validatePassword, $databaseConnection) {
+function createNewPeople($personName, $emailAddress, $phoneNumber, $databaseConnection) {
+    $dateTimeNow = date("Y-m-d H:i:s");
     $Query = "
                 INSERT INTO `people` 
-                (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
+                (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, 
+                `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
                 VALUES 
-                ('', '', '', 0, '', 0, '', 0, 0, 0, '', '', '', ?, NULL, '', '', 1, CURRENT_TIMESTAMP, '9999-12-31 23:59:59.997')";
+                (?, ?, ?, 0, 'NO LOGON', 0, NULL, 0, 0, 0, NULL, ?, NULL, ?, NULL, NULL, NULL, 1, ?, '9999-12-31 23:59:59.000000')";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_bind_param($Statement, "s", $emailAddress);
+    $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
     mysqli_stmt_execute($Statement);
     $Result = mysqli_stmt_get_result($Statement);
     return $Result;
 }
 
-// Users
+// Customers
 
 function getCustomerByPeopleID($id, $databaseConnection) {
     $Query = "
@@ -146,21 +150,23 @@ function getCustomerByPeopleID($id, $databaseConnection) {
     return $Customer;
 }
 
-// function createNewCustomerUnderPeopleID($id, $databaseConnection) {
-//     $Query = "
-//                 INSERT INTO `customers` 
-//                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
-//                 VALUES 
-//                 ('', NULL, NULL, ?, NULL, 1, NULL, NULL, 0.00, CURRENT_TIMESTAMP, 0.00, 0, 0, 0, '', '', NULL, NULL, '', '', '', '', '', '', '', '', 1, CURRENT_TIMESTAMP, '9999-12-31 23:59:59.997')";
+function createNewCustomer($peopleID, $personName, $emailAddress, $phoneNumber, $databaseConnection) {
+    $dateTimeNow = date("Y-m-d H:i:s");
+    $Query = "
+                INSERT INTO `people` 
+                (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, 
+                `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
+                VALUES 
+                (?, ?, ?, 0, 'NO LOGON', 0, NULL, 0, 0, 0, NULL, ?, NULL, ?, NULL, NULL, NULL, 1, ?, '9999-12-31 23:59:59.000000')";
 
-//     $Statement = mysqli_prepare($databaseConnection, $Query);
-//     mysqli_stmt_bind_param($Statement, "i", $id);
-//     mysqli_stmt_execute($Statement);
-//     $Result = mysqli_stmt_get_result($Statement);
-//     return $Result;
-// }
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    return $Result;
+}
 
-// Customers
+
 
 function getOrderByCustomerId($id, $databaseConnection) {
     $Query = "
