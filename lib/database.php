@@ -129,8 +129,7 @@ function createNewPeople($personName, $emailAddress, $phoneNumber, $databaseConn
     $Statement = mysqli_prepare($databaseConnection, $Query);
     $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
     mysqli_stmt_execute($Statement);
-    $Result = mysqli_stmt_get_result($Statement);
-    return $Result;
+    return mysqli_insert_id($databaseConnection);
 }
 
 // Customers
