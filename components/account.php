@@ -13,6 +13,9 @@ require_once "./lib/database.php";
         // 1. maak people aan
         // 2. maak een customer aan
         // reload page met header
+        
+        $people = createNewPeople($_POST["full-name"], $_SESSION["email"], $_POST["telefoonnummer"], $databaseConnection);
+        print_r($people);
     }
 
     if (isset($_POST["email-submit"]) || isset($_SESSION["email"])){
