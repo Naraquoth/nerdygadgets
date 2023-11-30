@@ -15,6 +15,8 @@ if (isset($_POST["pay-submit"])){
     $amount = number_format($totaalPrijs, 2, '.', ''); // maak een variable aan voor de totaal prijs en zet het in het juiste formats
     
     // create order
+    
+
 
     $payment = createPayment($amount, $_POST["issuer"], 0001);
 
