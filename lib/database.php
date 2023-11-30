@@ -149,34 +149,47 @@ function getCustomerByPeopleID($id, $databaseConnection) {
     return $Customer;
 }
 
-function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode,  $databaseConnection) {
+function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode,  $dbConn) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $date = date("Y-m-d");
-    // customerCategoryID needs to be changed
+    
+    $dbConn->begin_transaction();
 
-    //BillToCustomerID is nulleble gemaakt om de customerID te kunnen gebruiken als foreign key
-    $Query = "
+    $dbConn->prepare("SET FOREIGN_KEY_CHECKS=0")->execute();
+
+    // customerCategoryID needs to be changed to a new record is added to the customerCategories table for NerdyGadgets Shop
+
+    $query1 = "
                 INSERT INTO `customers` 
                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `BuyingGroupID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`)
                 VALUES 
-                (?, null, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
-                
+                (?, 0, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
+    $stmt1 = $dbConn->prepare($query1);
+    $stmt1->bind_param("sisssssssss", $personName, $peopleID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
+    $stmt1->execute();
+    if ($stmt1->affected_rows > 0) {
+        $newCustomerID = $dbConn->insert_id;
 
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    $Statement->bind_param("sisssssssss", $personName, $peopleID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
-    mysqli_stmt_execute($Statement);
-    $insertid = mysqli_insert_id($databaseConnection);
-    $Query = "SET @newCustomerID = LAST_INSERT_ID()";
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_execute($Statement);
-    $Query = "UPDATE customers SET BillToCustomerID = @newCustomerID WHERE customerID = @newCustomerID";
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    mysqli_stmt_execute($Statement);
-    
-    return $insertid;
+        $query2 = "UPDATE customers SET BillToCustomerID = ? WHERE customerID = ?";
+
+        $stmt2 = $dbConn->prepare($query2);
+
+        $stmt2->bind_param("ii", $newCustomerID, $newCustomerID);
+
+        $stmt2->execute();
+
+        $dbConn->prepare("SET FOREIGN_KEY_CHECKS=1")->execute();
+
+        $dbConn->commit();
+
+        return $newCustomerID;
+
+    } else {
+        $dbConn->rollback();
+        print_r($stmt1->error);
+        return null;
+    }    
 }
-
-
 
 function getOrderByCustomerId($id, $databaseConnection) {
     $Query = "
