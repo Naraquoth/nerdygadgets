@@ -10,4 +10,4 @@
         ?>
     </select>
     <form method="post"><button type="submit" name="terug-province-submit" value="Volgende">Terug</button></form>
-    <input type="submit" name="province-submit" value="volgende">
+    <button type="submit" name="province-submit" value="volgende">volgende </button>

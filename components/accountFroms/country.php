@@ -1,9 +1,15 @@
     <label for="country">Country</label>
     <select name="country" class="text-black" required>
+        <option  disabled>Selecteer een Land</option>
         <?php
         $countries = getCountries($databaseConnection);
         foreach ($countries as $value) {
-            echo "<option value='". $value["CountryID"] ."'>".$value["CountryName"]."</option>";
+            if ($value["CountryID"] == 230){
+                echo "<option value='". $value["CountryID"] ."' default>".$value["CountryName"]."</option>";
+            } else {
+                echo "<option value='". $value["CountryID"] ."' disabled>".$value["CountryName"]."</option>";
+            }
+            
         }
         ?>
     </select>

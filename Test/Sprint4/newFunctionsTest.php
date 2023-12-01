@@ -2,28 +2,30 @@
 
 require_once __DIR__ . '/../../lib/database.php';
 
+$email = $_GET["email"];
+
 $databaseConnection = connectToDatabase();
 
-$People = getPeopleByEmail("bala@example.com",$databaseConnection)[0];
+$People = getPeopleByEmail($email,$databaseConnection)[0];
 
 print_r($People);
 
-echo "\n";
+echo "<br><br>";
 
 $customer = getCustomerByPeopleID($People["PersonID"],$databaseConnection);
 
 print_r($customer);
 
-echo "\n";
+echo "<br><br>";
 
 $orders = getOrderByCustomerId($customer[0]["CustomerID"],$databaseConnection);
 
 print_r($orders[count($orders) - 1]);
 
-echo "\n";
+echo "<br><br>";
 
 $orderDetails = getOrderDetailsByOrderId($orders[0]["OrderID"],$databaseConnection);
 
 print_r($orderDetails);
 
-echo "\n";
+echo "<br><br>";
