@@ -4,12 +4,12 @@ require_once "./lib/betaalfuncties.php";
 
 $method = getIssuers();
 
-echo 'Select your bank: <select class="text-black" name="issuer" required>';
+echo '<label for="issuer">Select your bank:</label> <select class="text-black" name="issuer" required>';
 
 foreach ($method->issuers() as $issuer) {
     echo '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
 }
 ?>
-<option value="">or select later</option>
-</select>
+<option value="" selected>or select later</option>
 
+</select>

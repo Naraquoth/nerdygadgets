@@ -8,19 +8,27 @@ require_once "./lib/database.php";
 
 $databaseConnection = connectToDatabase();
 
-$customer = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
+if (!isset($_SESSION["CustomerDetails"])){
+   $_SESSION["CustomerDetails"] = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
+}
+$customer = $_SESSION["CustomerDetails"];
 
 if (isset($_POST["pay-submit"])){
     require_once "./lib/betaalfuncties.php";
     $amount = number_format($totaalPrijs, 2, '.', ''); // maak een variable aan voor de totaal prijs en zet het in het juiste formats
     
     // create order
+
+    $orderid = createNewOrder($_SESSION["CustomerDetails"]["CustomerID"], $_SESSION["userID"], $cartItems, $databaseConnection);
     
+    print_r($orderid);
 
+    $payment = createPayment($amount, $_POST["issuer"], $orderid);
 
-    $payment = createPayment($amount, $_POST["issuer"], 0001);
+    session_destroy();
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    die();
     
 
 } else {

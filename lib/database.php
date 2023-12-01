@@ -22,6 +22,45 @@ function connectToDatabase() {
     return $Connection;
 }
 
+// country, province and city
+
+function getCountries($databaseConnection) {
+    $Query = "
+                SELECT CountryID, CountryName FROM `countries`";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Countries = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Countries;
+}
+
+function getProvincesByCountryId($id, $databaseConnection) {
+    $Query = "
+                SELECT StateProvinceID, StateProvinceName FROM `stateprovinces` WHERE `CountryID` = ?";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Provinces = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Provinces;
+}
+
+function getCitiesByProvinceId($id, $databaseConnection) {
+    $Query = "
+                SELECT CityID, CityName FROM `cities` WHERE `StateProvinceID` = ?";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Cities = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Cities;
+}
+
+
+// products
 function getHeaderStockGroups($databaseConnection) {
     $Query = "
                 SELECT StockGroupID, StockGroupName, ImagePath
@@ -63,7 +102,8 @@ function getStockItem($id, $databaseConnection) {
             RecommendedRetailPrice,
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
-            SearchDetails, 
+            SearchDetails,
+            UnitPackageID, 
             (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
             (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
             FROM stockitems SI 
@@ -149,7 +189,7 @@ function getCustomerByPeopleID($id, $databaseConnection) {
     return $Customer;
 }
 
-function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode,  $dbConn) {
+function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $woonplaatsID,  $dbConn) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $date = date("Y-m-d");
     
@@ -163,9 +203,9 @@ function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddres
                 INSERT INTO `customers` 
                 (`CustomerName`, `BillToCustomerID`, `CustomerCategoryID`, `BuyingGroupID`, `PrimaryContactPersonID`, `AlternateContactPersonID`, `DeliveryMethodID`, `DeliveryCityID`, `PostalCityID`, `CreditLimit`, `AccountOpenedDate`, `StandardDiscountPercentage`, `IsStatementSent`, `IsOnCreditHold`, `PaymentDays`, `PhoneNumber`, `FaxNumber`, `DeliveryRun`, `RunPosition`, `WebsiteURL`, `DeliveryAddressLine1`, `DeliveryAddressLine2`, `DeliveryPostalCode`, `DeliveryLocation`, `PostalAddressLine1`, `PostalAddressLine2`, `PostalPostalCode`, `LastEditedBy`, `ValidFrom`, `ValidTo`)
                 VALUES 
-                (?, 0, 3, NULL, ?, NULL, 3, 1, 1, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
+                (?, 0, 3, NULL, ?, NULL, 3, ?, ?, 0.00, ?, 0.000, 0, 0, 7, ?, '', NULL, NULL, 'nerdygadgets.shop', ?, ?, ?, NULL, ?, ?, ?, 1, ?, '9999-12-31 23:59:59.000000')";
     $stmt1 = $dbConn->prepare($query1);
-    $stmt1->bind_param("sisssssssss", $personName, $peopleID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
+    $stmt1->bind_param("siiisssssssss", $personName, $peopleID, $woonplaatsID, $woonplaatsID, $date, $phoneNumber, $deliveryaddress1 , $deliveryaddress2, $postcode, $deliveryaddress1 , $deliveryaddress2, $postcode, $dateTimeNow);
     $stmt1->execute();
     if ($stmt1->affected_rows > 0) {
         $newCustomerID = $dbConn->insert_id;
@@ -191,6 +231,8 @@ function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddres
     }    
 }
 
+// Orders
+
 function getOrderByCustomerId($id, $databaseConnection) {
     $Query = "
                 SELECT OrderID, BackorderOrderID, OrderDate, ExpectedDeliveryDate 
@@ -203,6 +245,62 @@ function getOrderByCustomerId($id, $databaseConnection) {
     $Result = mysqli_stmt_get_result($Statement);
     $Order = mysqli_fetch_all($Result, MYSQLI_ASSOC);
     return $Order;
+}
+
+function createNewOrder($customerID, $userID, $cartItemsArray, $dbConn) { 
+    $dateTimeNow = date("Y-m-d H:i:s");
+    $date = date("Y-m-d");
+    $dateExpectedDelivery = date("Y-m-d", strtotime($date. ' + 7 days'));
+
+    $dbConn->begin_transaction();
+
+    $query1 = "INSERT INTO `orders`
+     (`CustomerID`, `SalespersonPersonID`, `PickedByPersonID`, `ContactPersonID`, `BackorderOrderID`, `OrderDate`, `ExpectedDeliveryDate`, `CustomerPurchaseOrderNumber`, `IsUndersupplyBackordered`, `Comments`, `DeliveryInstructions`, `InternalComments`, `PickingCompletedWhen`, `LastEditedBy`, `LastEditedWhen`)
+      VALUES 
+      (?, 1, NULL, ?, NULL, ?, ?, NULL, 0, NULL, NULL, NULL, NULL, 1, ?)";
+    $stmt1 = $dbConn->prepare($query1);
+     $stmt1->bind_param("iisss", $customerID, $userID, $date, $dateExpectedDelivery, $dateTimeNow);
+    $stmt1->execute();
+    if ($stmt1->affected_rows > 0) {
+        $newOrderID = $dbConn->insert_id;
+        // $query2 = "INSERT INTO `invoices` 
+        // (`CustomerID`, `BillToCustomerID`, `OrderID`, `DeliveryMethodID`, `ContactPersonID`, `AccountsPersonID`, `SalespersonPersonID`, `PackedByPersonID`, `InvoiceDate`, `CustomerPurchaseOrderNumber`, `IsCreditNote`, `CreditNoteReason`, `Comments`, `DeliveryInstructions`, `InternalComments`, `TotalDryItems`, `TotalChillerItems`, `DeliveryRun`, `RunPosition`, `ReturnedDeliveryData`, `ConfirmedDeliveryTime`, `ConfirmedReceivedBy`, `LastEditedBy`, `LastEditedWhen`) 
+        // VALUES 
+        // (?, ?, ?, 3, ?, ?, 1, 1, ?, NULL, 0, NULL, NULL, NULL, NULL, ?, 0, NULL, NULL, NULL, NULL, NULL, 1, ?)";
+        // $stmt2 = $dbConn->prepare($query2);
+        // $totalItems = count($cartItemsArray);
+        // $stmt2->bind_param("iiiiisis", $customerID, $customerID, $newOrderID, $userID, $userID, $date, $totalItems, $dateTimeNow);
+        // $stmt2->execute();
+        // $newInvoiceID = $dbConn->insert_id;
+
+        // $query3 = "INSERT INTO `customertransactions` 
+        // (`CustomerID`, `TransactionTypeID`, `InvoiceID`, `PaymentMethodID`, `TransactionDate`, `AmountExcludingTax`, `TaxAmount`, `TransactionAmount`, `OutstandingBalance`, `FinalizationDate`, `IsFinalized`, `LastEditedBy`, `LastEditedWhen`)
+        // VALUES 
+        // (?, 3, ?, 5, '', '', '', '', '', NULL, 0, 1, ?)";
+        // $stmt3 = $dbConn->prepare($query3);
+        // $stmt3->bind_param("iis", $customerID, $newInvoiceID, $dateTimeNow);
+        // $stmt3->execute();
+
+        foreach ($cartItemsArray as $stockItem){
+            $query4 = "INSERT INTO 
+            `orderlines` (`OrderID`, `StockItemID`, `Description`, `PackageTypeID`, `Quantity`, `UnitPrice`, `TaxRate`, `PickedQuantity`, `PickingCompletedWhen`, `LastEditedBy`, `LastEditedWhen`)
+            VALUES
+            (?, ?, ?, ?, ?, ?, ?, 0, NULL, 1, ?)";
+            $stmt4 = $dbConn->prepare($query4);
+            $stmt4->bind_param("iisiidds",$newOrderID, $stockItem["StockItemID"], $stockItem["StockItemName"], $stockItem["UnitPackageID"], $stockItem["aantal"], $stockItem["SellPrice"], $stockItem["TaxRate"], $dateTimeNow);
+            $stmt4->execute();
+        }
+
+        $dbConn->commit();
+
+        return $newOrderID;
+
+    } else {
+        $dbConn->rollback();
+        print_r($stmt1->error);
+        return null;
+    }
+
 }
 
 
