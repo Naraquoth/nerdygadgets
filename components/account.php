@@ -4,7 +4,6 @@ require_once "./lib/database.php";
     // country-submit
     if(isset($_POST["terug-country-submit"])){
         unset($_SESSION["email"]);
-        print_r($_SESSION);
     }
     if (isset($_POST["country-submit"])){
         $_SESSION["MyCountryID"] = $_POST["country"];
@@ -12,7 +11,6 @@ require_once "./lib/database.php";
     // province-submit
     if(isset($_POST["terug-province-submit"])){
         unset($_SESSION["MyCountryID"]);
-        print_r($_SESSION);
     }
     if (isset($_POST["province-submit"])){
     $_SESSION["MyProvinceID"] = $_POST["province"];
@@ -20,7 +18,6 @@ require_once "./lib/database.php";
     // register-submit
     if(isset($_POST["terug-register-submit"])){
         unset($_SESSION["MyProvinceID"]);
-        print_r($_SESSION);
     }
     if(isset($_POST["register-submit"])){
         unset($_SESSION["MyCountryID"]);

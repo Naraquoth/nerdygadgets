@@ -20,8 +20,6 @@ if (isset($_POST["pay-submit"])){
     // create order
 
     $orderid = createNewOrder($_SESSION["CustomerDetails"]["CustomerID"], $_SESSION["userID"], $cartItems, $databaseConnection);
-    
-    print_r($orderid);
 
     $payment = createPayment($amount, $_POST["issuer"], $orderid);
 
