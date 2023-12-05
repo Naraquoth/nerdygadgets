@@ -320,3 +320,23 @@ function getOrderDetailsByOrderId($id, $databaseConnection) {
     $OrderDetails = mysqli_fetch_all($Result, MYSQLI_ASSOC);
     return $OrderDetails;
 }
+
+// vooraad aanpassen.
+
+function changeInventoryByOrderId($orderId, $dbconn){
+
+    $query1 = "SELECT * FROM `orderlines` WHERE `OrderID` = ?";
+    $Statement1 = mysqli_prepare($dbconn, $query1);
+    mysqli_stmt_bind_param($Statement1, "i", $orderId);
+    mysqli_stmt_execute($Statement1);
+    $Result1 = mysqli_stmt_get_result($Statement1);
+
+
+    foreach($Result1 as $row){
+        $query2 = "UPDATE stockitemholdings SET QuantityOnHand = (QuantityOnHand - ?) WHERE StockItemID = ?";
+        $Statement2 = mysqli_prepare($dbconn, $query2);
+        mysqli_stmt_bind_param($Statement2, "ii", $row["Quantity"], $row["StockItemID"] );
+        mysqli_stmt_execute($Statement2);
+    }
+
+}
