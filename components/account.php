@@ -39,26 +39,26 @@ require_once "./lib/database.php";
         if (!isset($_SESSION["email"]) && isset($_POST["email"])){
             $accountByEmail = getPeopleByEmail($_POST["email"], $databaseConnection);
             $_SESSION["email"] = $_POST["email"];
-            $_SESSION["EmailIsRegistered"] = (count($accountByEmail) == 0);
+            $_SESSION["EmailIsRegistered"] = (count($accountByEmail) !== 0);
         }
 
         if ($_SESSION["EmailIsRegistered"]) {
-            if (isset($_SESSION["MyCountryID"]) && isset($_SESSION["MyProvinceID"])){
+           $_SESSION["userID"] = $accountByEmail[0]["PersonID"];
+           // login form ?
+
+            // require_once "./components/accountFroms/password.php";
+            header("Location: checkout.php"); // refresh de pagina
+            die();
+            
+        }
+        else {
+             if (isset($_SESSION["MyCountryID"]) && isset($_SESSION["MyProvinceID"])){
                 require_once "./components/accountFroms/register.php";
             } else if (isset($_SESSION["MyCountryID"])){
                 require_once "./components/accountFroms/province.php";
             } else{
                 require_once "./components/accountFroms/country.php";
             }
-        }
-        else {
-            $_SESSION["userID"] = $accountByEmail[0]["PersonID"];
-            header("Location: checkout.php"); // refresh de pagina
-            die();
-
-            // login form ?
-
-            // require_once "./components/accountFroms/password.php";
         }
 
     } else {
