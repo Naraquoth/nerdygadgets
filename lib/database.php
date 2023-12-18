@@ -139,7 +139,45 @@ function getStockItemImage($id, $databaseConnection) {
 
     return $R;
 }
+//banner
+function getSliderImages($id, $databaseConnection) {
+   
+    $query = "SELECT ImagePath FROM sliderimage WHERE SliderID = ?";
+    $stmt = $databaseConnection->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $images = $result->fetch_all(MYSQLI_ASSOC);
+    return $images;
+}
+function getSliderID($databaseConnection) {
 
+    $query = "SELECT SliderID FROM sliderimage";
+    $stmt = $databaseConnection->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $ids = $result->fetch_all(MYSQLI_NUM);
+    // Flatten the array of arrays into a simple array of IDs
+    $ids = array_map(function($item) {
+        return $item[0];
+    }, $ids);
+    return $ids;
+}
+
+    function getSliderStockID($id, $databaseConnection) {
+
+        $Query = "
+                    SELECT StockItemID
+                    FROM sliderimage 
+                    WHERE SliderID = ?";
+    
+        $Statement = mysqli_prepare($databaseConnection, $Query);
+        mysqli_stmt_bind_param($Statement, "i", $id);
+        mysqli_stmt_execute($Statement);
+        $result = mysqli_stmt_get_result($Statement);
+        $stockitemid = mysqli_fetch_assoc($result)['StockItemID'];
+        return $stockitemid;
+    }
 // Users account.
 
 function getPeopleByEmail($emailAddress, $databaseConnection) {
