@@ -141,6 +141,16 @@ function getStockItemImage($id, $databaseConnection) {
 }
 //banner
 
+function insertSlider($SliderName, $ImagePath, $StockItemID, $databaseConnection) {
+    
+    $Query = "INSERT INTO sliderimage (SliderName, ImagePath, StockItemID) VALUES (?,?,?)";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("ssi",$SliderName, $ImagePath, $StockItemID);
+    mysqli_stmt_execute($Statement);
+    return mysqli_insert_id($databaseConnection);
+}
+
 function getSliderImages($id, $databaseConnection) {
    
     $query = "SELECT ImagePath FROM sliderimage WHERE SliderID = ?";

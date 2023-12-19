@@ -45,25 +45,15 @@ include __DIR__ . "/components/header.php";
 if(isset($_POST['Submit'])){
     $SliderName = $_POST['SliderName'];
     $StockItemID = $_POST['StockItemID'];
-    $ImagePath = basename($_FILES['ImagePath']['name']);
+    $ImagePath = "Pub/Banner/".basename($_FILES['ImagePath']['name']);
     $temp_image = $_FILES['ImagePath']['tmp_name'];
-    move_uploaded_file($temp_image, "Pub/Banner/$ImagePath)");
+    move_uploaded_file($temp_image, "$ImagePath");
     $insertSlider = insertSlider($SliderName, $ImagePath, $StockItemID, $databaseConnection);
+
     if($insertSlider){
         echo "<script>alert('Slider has been inserted')</script>";
         echo "<script>window.open('addbanner.php', '_self')</script>";
     }
-}
-Pub/Banner/
-
-function insertSlider($SliderName, $ImagePath, $StockItemID, $databaseConnection) {
-    
-    $Query = "INSERT INTO sliderimage (SliderName, ImagePath, StockItemID) VALUES (?,?,?)";
-    
-    $Statement = mysqli_prepare($databaseConnection, $Query);
-    $Statement->bind_param("ssi",$SliderName, $ImagePath, $StockItemID);
-    mysqli_stmt_execute($Statement);
-    return mysqli_insert_id($databaseConnection);
 }
 
 
