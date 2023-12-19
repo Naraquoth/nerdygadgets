@@ -1,18 +1,28 @@
 <?php
-// vang hier postrequest af van de pi en zet dit in de juiste database.
-$random = rand(1,400);
-$url = 'http://numbersapi.com/'.$random.'/trivia';
-$crl = curl_init();
-curl_setopt($crl, CURLOPT_URL, $url);
-curl_setopt($crl, CURLOPT_FRESH_CONNECT, true);
-curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($crl);
-curl_close($crl);
-print($response);
 
 
-// Access the JSON data from $_POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo "Method not allowed";
+    exit;
+}
 
+require_once "./lib/database.php";
+$databaseConnection = connectToDatabase();
 
-// Check if data is available
+$json = file_get_contents('php://input');
+
+if ($json != null){
+    $data = json_decode($json, true); 
+    if (isset($data["sensor_id"]) && isset($data["temp"]) && isset($data["date"])){
+        // TODO: store data in database
+        print_r($data);
+    } else {
+        http_response_code(400);
+        echo "JSON data is not valid";
+    }
+} else {
+    http_response_code(400);
+    echo "no JSON data received";
+}
+
