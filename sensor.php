@@ -1,6 +1,5 @@
 <?php
 
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo "Method not allowed";
@@ -17,6 +16,7 @@ if ($json != null){
     if (isset($data["sensor_id"]) && isset($data["temp"]) && isset($data["date"])){
         // TODO: store data in database
         print_r($data);
+        insertSensorData($data["sensor_id"], $data["temp"], $data["date"], $databaseConnection);
     } else {
         http_response_code(400);
         echo "JSON data is not valid";

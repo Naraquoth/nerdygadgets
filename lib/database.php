@@ -340,3 +340,16 @@ function changeInventoryByOrderId($orderId, $dbconn){
     }
 
 }
+
+
+function insertSensorData($sensorId, $tempratuur, $datetime, $dbconn){
+    $dateTimeNow = date("Y-m-d H:i:s");
+    $query1 = "INSERT INTO `coldroomtemperatures`
+    (`ColdRoomTemperatureID`, `ColdRoomSensorNumber`, `RecordedWhen`, `Temperature`, `ValidFrom`, `ValidTo`)
+VALUES 
+    (NULL, ?, ?, ?, ?, ?)";
+    $statement1 = mysqli_prepare($dbconn,$query1);
+    mysqli_stmt_bind_param($statement1, "isdss", $sensorId, $datetime, $tempratuur, $dateTimeNow, $dateTimeNow);
+    mysqli_stmt_execute($statement1);
+
+}
