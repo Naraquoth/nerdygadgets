@@ -70,7 +70,7 @@ foreach($cart as $i => $aantal){
     </div>
     <div>
       <p class="text-white text-xl">Aantal</p>
-      <!-- <p class="text-white text-xl"><?php echo $aantal ?></p> -->
+      
       <input type='number' name='e-item' value='<?php echo $i ?>' hidden>
       <input type='number' name='e-item-aantal' id="e-item-aantal-<?php echo $i ?>" class=" bg-transparent text-white text-xl" value='<?php echo $aantal ?>' >
       <button type='submit' name='edit-item' id="edit-item-<?php echo $i ?>" hidden></button>
