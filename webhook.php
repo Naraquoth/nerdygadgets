@@ -12,6 +12,8 @@ try {
      * See: https://www.mollie.com/dashboard/developers/api-keys
      */
     require "./lib/betaalfuncties.php";
+    require "./lib/Database.php";
+    $databaseConnection = connectToDatabase();
 
     /*
      * Retrieve the payment's current state.
@@ -25,10 +27,8 @@ try {
     //database_write($orderId, $payment->status);
 
     if ($payment->isPaid() && ! $payment->hasRefunds() && ! $payment->hasChargebacks()) {
-        /*
-         * The payment is paid and isn't refunded or charged back.
-         * At this point you'd probably want to start the process of delivering the product to the customer.
-         */
+        changeInventoryByOrderId($orderId, $databaseConnection);
+
     } elseif ($payment->isOpen()) {
         /*
          * The payment is open.
