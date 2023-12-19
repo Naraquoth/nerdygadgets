@@ -140,6 +140,7 @@ function getStockItemImage($id, $databaseConnection) {
     return $R;
 }
 //banner
+
 function getSliderImages($id, $databaseConnection) {
    
     $query = "SELECT ImagePath FROM sliderimage WHERE SliderID = ?";

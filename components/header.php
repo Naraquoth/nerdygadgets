@@ -56,6 +56,9 @@ require_once "./lib/cartfuncties.php";
 <!-- code voor US3: zoeken -->
         <ul id="ul-class-navigation">
             <li>
+                <a href="addbanner.php" class="HrefDecoration"><i class="fa fa-search search"></i> Banner</a>
+            </li>
+            <li>
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
             </li>
             <li>

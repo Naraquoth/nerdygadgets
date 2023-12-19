@@ -7,6 +7,7 @@ $allImages = [];
 foreach ($ids as $id) {
     $images = getSliderImages($id, $databaseConnection);
     $allImages = array_merge($allImages, $images);
+
 }
 ?>
 
@@ -24,7 +25,7 @@ foreach ($ids as $id) {
                     if ($i == 0) {
                         $actives = 'active';
                     }
-                    
+                
                 ?>
                 <li data-target="#Slider" data-slide-to="<?= $i; ?>" class="<?= $actives; ?>"></li>
                 <?php $i++; } ?>
@@ -33,15 +34,16 @@ foreach ($ids as $id) {
             <div class="carousel-inner">
                 <?php 
                 $i = 0;
-                $j = 1;
+                $j = 0;
                 foreach ($allImages as $row) {
                     $actives = '';
                     if ($i == 0) {
                         $actives = 'active';
                     }
-                    $stockItemID = getSliderStockID($j, $databaseConnection);
+                    $SID = $ids[$j];
+                    $stockItemID = getSliderStockID($SID, $databaseConnection);
                     $stockItemID = $stockItemID ? htmlspecialchars($stockItemID, ENT_QUOTES, 'UTF-8') : '16';
-                    $imagePath = isset($row['ImagePath']) ? htmlspecialchars($row['ImagePath'], ENT_QUOTES, 'UTF-8') : '';
+                    $imagePath = isset($row['ImagePath']) ? htmlspecialchars($row['ImagePath'], ENT_QUOTES, 'UTF-8') : 'Pub/Banner/Slider-1.png';
                 ?>
                 <div class="carousel-item <?= $actives; ?>">
                     <a href="/view.php?id=<?= $stockItemID; ?>">
