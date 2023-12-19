@@ -6,5 +6,8 @@
 
 ## 3. run: composer install
 
-# Om payment tegebruiken lokaal run: ngrok http --host-header=localhost 80 
+# Om payment tegebruiken lokaal run: 
+
+ngrok http --host-header=localhost 80 
+
 Vul url in de .env.
