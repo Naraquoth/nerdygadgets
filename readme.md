@@ -11,3 +11,16 @@
 ngrok http --host-header=localhost 80 
 
 Vul url in de .env.
+
+
+
+# database aanpassingen:
+
+## 1. sensordata:
+
+dit zijn de sql commando's die je moet uitvoeren voor de trigger's
+
+```sql
+select * from
+
+```

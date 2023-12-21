@@ -139,7 +139,94 @@ function getStockItemImage($id, $databaseConnection) {
 
     return $R;
 }
+//banner
 
+function insertSlider($SliderName, $ImagePath, $StockItemID, $databaseConnection) {
+    
+    $Query = "INSERT INTO sliderimage (SliderName, ImagePath, StockItemID) VALUES (?,?,?)";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("ssi",$SliderName, $ImagePath, $StockItemID);
+    mysqli_stmt_execute($Statement);
+    return mysqli_insert_id($databaseConnection);
+}
+function updateSlider($SliderName, $ImagePath, $StockItemID, $SliderID, $databaseConnection) {
+    
+    $Query = "UPDATE sliderimage SET SliderName = ?, ImagePath = ?, StockItemID = ? WHERE SliderID = ?";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("ssii",$SliderName, $ImagePath, $StockItemID, $SliderID);
+    mysqli_stmt_execute($Statement);
+    return mysqli_insert_id($databaseConnection);
+}
+
+function deleteSlider($SliderID, $databaseConnection) {
+    
+    $Query = "DELETE FROM sliderimage WHERE SliderID = ?";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("i",$SliderID);
+    $success = mysqli_stmt_execute($Statement);
+    return $success;
+}
+function getSliderImages($id, $databaseConnection) {
+   
+    $query = "SELECT ImagePath FROM sliderimage WHERE SliderID = ?";
+    $stmt = $databaseConnection->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $images = $result->fetch_all(MYSQLI_ASSOC);
+    return $images;
+}
+function getSliderID($databaseConnection) {
+
+    $query = "SELECT SliderID FROM sliderimage";
+    $stmt = $databaseConnection->prepare($query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $ids = $result->fetch_all(MYSQLI_NUM);
+    // Flatten the array of arrays into a simple array of IDs
+    $ids = array_map(function($item) {
+        return $item[0];
+    }, $ids);
+    return $ids;
+}
+
+    function getSliderStockID($id, $databaseConnection) {
+
+        $Query = "
+                    SELECT StockItemID
+                    FROM sliderimage 
+                    WHERE SliderID = ?";
+    
+        $Statement = mysqli_prepare($databaseConnection, $Query);
+        mysqli_stmt_bind_param($Statement, "i", $id);
+        mysqli_stmt_execute($Statement);
+        $result = mysqli_stmt_get_result($Statement);
+        $stockitemid = mysqli_fetch_assoc($result)['StockItemID'];
+        return $stockitemid;
+    }
+    function getSlider($databaseConnection) {
+
+        $query = "SELECT * FROM sliderimage";
+        $stmt = $databaseConnection->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $slides = $result->fetch_all(MYSQLI_NUM);
+        return $slides;
+    }
+
+    function getSliderByID($id, $databaseConnection) {
+   
+        $query = "SELECT * FROM sliderimage WHERE SliderID = ?";
+        $stmt = $databaseConnection->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $images = $result->fetch_all(MYSQLI_ASSOC);
+        return $images;
+    }
 // Users account.
 
 function getPeopleByEmail($emailAddress, $databaseConnection) {
@@ -367,4 +454,8 @@ VALUES
     mysqli_stmt_bind_param($statement1, "isdss", $sensorId, $datetime, $tempratuur, $dateTimeNow, $dateTimeNow);
     mysqli_stmt_execute($statement1);
 
+    $query2 = "DELETE FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5 AND `ColdRoomTemperatureID` <> (
+                SELECT MAX(`ColdRoomTemperatureID`) FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5
+            )";
+    mysqli_query($dbconn, $query2);
 }

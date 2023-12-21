@@ -60,6 +60,7 @@ input {
 table tr th,
 table tr td {
     padding: 10px;
+    color: #ccc;
 }
 ul#ul-class-navigation {
     right: 10px;
