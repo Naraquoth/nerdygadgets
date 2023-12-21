@@ -352,4 +352,8 @@ VALUES
     mysqli_stmt_bind_param($statement1, "isdss", $sensorId, $datetime, $tempratuur, $dateTimeNow, $dateTimeNow);
     mysqli_stmt_execute($statement1);
 
+    $query2 = "DELETE FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5 AND `ColdRoomTemperatureID` <> (
+                SELECT MAX(`ColdRoomTemperatureID`) FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5
+            )";
+    mysqli_query($dbconn, $query2);
 }
