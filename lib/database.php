@@ -150,7 +150,25 @@ function insertSlider($SliderName, $ImagePath, $StockItemID, $databaseConnection
     mysqli_stmt_execute($Statement);
     return mysqli_insert_id($databaseConnection);
 }
+function updateSlider($SliderName, $ImagePath, $StockItemID, $SliderID, $databaseConnection) {
+    
+    $Query = "UPDATE sliderimage SET SliderName = ?, ImagePath = ?, StockItemID = ? WHERE SliderID = ?";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("ssii",$SliderName, $ImagePath, $StockItemID, $SliderID);
+    mysqli_stmt_execute($Statement);
+    return mysqli_insert_id($databaseConnection);
+}
 
+function deleteSlider($SliderID, $databaseConnection) {
+    
+    $Query = "DELETE FROM sliderimage WHERE SliderID = ?";
+    
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    $Statement->bind_param("i",$SliderID);
+    $success = mysqli_stmt_execute($Statement);
+    return $success;
+}
 function getSliderImages($id, $databaseConnection) {
    
     $query = "SELECT ImagePath FROM sliderimage WHERE SliderID = ?";
@@ -188,6 +206,26 @@ function getSliderID($databaseConnection) {
         $result = mysqli_stmt_get_result($Statement);
         $stockitemid = mysqli_fetch_assoc($result)['StockItemID'];
         return $stockitemid;
+    }
+    function getSlider($databaseConnection) {
+
+        $query = "SELECT * FROM sliderimage";
+        $stmt = $databaseConnection->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $slides = $result->fetch_all(MYSQLI_NUM);
+        return $slides;
+    }
+
+    function getSliderByID($id, $databaseConnection) {
+   
+        $query = "SELECT * FROM sliderimage WHERE SliderID = ?";
+        $stmt = $databaseConnection->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $images = $result->fetch_all(MYSQLI_ASSOC);
+        return $images;
     }
 // Users account.
 

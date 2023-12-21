@@ -1,6 +1,7 @@
 <?php
 include __DIR__ . "/components/header.php";
 ?>
+
 <html>
 <main>
 <body>

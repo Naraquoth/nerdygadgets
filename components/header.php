@@ -59,6 +59,9 @@ require_once "./lib/cartfuncties.php";
                 <a href="addbanner.php" class="HrefDecoration"><i class="fa fa-money-bill search"></i> Banner</a>
             </li>
             <li>
+                <a href="viewbanner.php" class="HrefDecoration"><i class="fa fa-search search"></i> View</a>
+            </li>
+            <li>
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search search"></i> Zoeken</a>
             </li>
             <li>
