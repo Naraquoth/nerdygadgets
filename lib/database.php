@@ -157,6 +157,21 @@ function getPeopleByEmail($emailAddress, $databaseConnection) {
     return $People;
 }
 
+function getPeopleById($id, $databaseConnection) {
+    $Query = "
+                SELECT PersonID, EmailAddress, IsEmployee
+                FROM people
+                WHERE PersonID = ? 
+                LIMIT 1";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $People = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $People;
+}
+
 function createNewPeople($personName, $emailAddress, $phoneNumber, $databaseConnection) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $Query = "
