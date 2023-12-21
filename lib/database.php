@@ -103,7 +103,8 @@ function getStockItem($id, $databaseConnection) {
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails,
-            UnitPackageID, 
+            UnitPackageID,
+            IsChillerStock, 
             (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
             (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
             FROM stockitems SI 
@@ -356,4 +357,14 @@ VALUES
                 SELECT MAX(`ColdRoomTemperatureID`) FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5
             )";
     mysqli_query($dbconn, $query2);
+}
+
+function GetChiller5($dbconn){
+    $query1 = "SELECT `Temperature` FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5 LIMIT 1";
+    $result = mysqli_query($dbconn, $query1);
+    $temp = mysqli_fetch_assoc($result);
+    $faketemp = $temp['Temperature'] - 40;
+    return $faketemp;
+
+
 }

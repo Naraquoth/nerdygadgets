@@ -132,7 +132,20 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                             ?>
                         </td>
                     </tr>
-                <?php } ?>
+                <?php }
+                if ($StockItem['IsChillerStock'] == 1){
+                ?>
+                    <tr>
+                        <td>
+                            Tempratuur:
+                        </td>
+                        <td>
+                            <?php
+                            echo (GetChiller5($databaseConnection)."°C")
+                            ?>
+
+                        </td>
+                    </tr><?php } ?>
                 </table><?php
             } else { ?>
 
