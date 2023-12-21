@@ -31,6 +31,7 @@ include __DIR__ . "/components/header.php";
                         <div class="form-group">
                             <input type="submit" name="Submit" class="form-control" value="Insert Slider" required>
                         </div>
+                        
                     </form>
                 </div>
         </div>
@@ -53,7 +54,7 @@ if(isset($_POST['Submit'])){
 
     if($insertSlider){
         echo "<script>alert('Slider has been inserted')</script>";
-        echo "<script>window.open('addbanner.php', '_self')</script>";
+        echo "<script>window.open('viewbanner.php', '_self')</script>";
     }
 }
 

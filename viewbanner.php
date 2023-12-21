@@ -5,8 +5,20 @@ include __DIR__ . "/components/header.php";
 table tr th,
 table tr td {
     padding: 10px;
-    color: #ccc;
+    color: #fff;
 }
+.block {
+      display: block;
+      width: 30%;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 14px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      margin: 0 auto;
+}
+    
 </style>
 <html>
 <main>
@@ -51,7 +63,9 @@ table tr td {
                          <?php }}
                          ?>
                     </table>
-
+                    <a href="addbanner.php">
+                    <button class="block"><b>Add slide</b></button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -73,8 +87,6 @@ if(isset($_GET['slider_delete_id'])){
         echo "<script>window.open('viewbanner.php', '_self')</script>";
     }
 }
-
-
 
 include __DIR__ . "/components/footer.php";
 ?>
