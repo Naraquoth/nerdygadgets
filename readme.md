@@ -20,43 +20,20 @@ Vul url in de .env.
 
 dit zijn de sql commando's die je moet uitvoeren voor de trigger's
 
-```sql
-select * from
-
-```
-
-
-# ___Instructies___
-
-___Indien de database niet automatisch wordt geüpdatet, voer dan de volgende query uit in phpMyAdmin/MySQL workbench:
-```sql
-CREATE TABLE `sliderimage` (
-  `ImagePath` varchar(255) NOT NULL,
-  `SliderID` int(11) NOT NULL AUTO_INCREMENT,
-  `StockItemID` int(11) NOT NULL,
-  `SliderName` varchar(255) NOT NULL,
-  PRIMARY KEY (`SliderID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-```
-
-___Dit creëert de tabel die nodig is voor de slider
-___Daarna kan je de slider gebruiken door naar addbanner.php te gaan en hier bestanden to te voegen. 
-___Standaard zullen er 3 sliders meegeleverd worden, om deze toe te voegen aan de database, voer de volgende queries uit:
+Trigger voor coldroomtempratures
 
 ```sql
-INSERT INTO `sliderimage` (`ImagePath`, `SliderID`, `StockItemID`, `SliderName`)
-VALUES
-	('Pub/Banner/Slider-1.png', 1, 16, 'slider1');
-```
+DELIMITER //
 
-```sql
- INSERT INTO `sliderimage` (`ImagePath`, `SliderID`, `StockItemID`, `SliderName`)
-VALUES
-	('Pub/Banner/Slider-2.png', 2, 34, 'slider2');
-```
+CREATE TRIGGER Archief
+    AFTER INSERT ON coldroomtemperatures
+    FOR EACH ROW
+BEGIN
+    IF NEW.ColdRoomSensorNumber = 5 THEN
+    INSERT INTO coldroomtemperatures_archive (ColdRoomTemperatureID, ColdRoomSensorNumber, RecordedWhen, Temperature, ValidFrom, ValidTo)
+    VALUES (NEW.ColdRoomTemperatureID, NEW.ColdRoomSensorNumber, NEW.RecordedWhen, NEW.Temperature, NEW.ValidFrom, NEW.ValidTo);
+END IF;
+END//
 
-```sql
-INSERT INTO `sliderimage` (`ImagePath`, `SliderID`, `StockItemID`, `SliderName`)
-VALUES
-	('Pub/Banner/Slider-3.jpg', 3, 28, 'slider3');
+DELIMITER ;
 ```

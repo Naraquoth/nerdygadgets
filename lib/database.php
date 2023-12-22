@@ -104,7 +104,8 @@ function getStockItem($id, $databaseConnection) {
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails,
-            UnitPackageID, 
+            UnitPackageID,
+            IsChillerStock, 
             (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
             (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
             FROM stockitems SI 
@@ -442,8 +443,6 @@ function changeInventoryByOrderId($orderId, $dbconn){
     }
 
 }
-
-
 function insertSensorData($sensorId, $tempratuur, $datetime, $dbconn){
     $dateTimeNow = date("Y-m-d H:i:s");
     $query1 = "INSERT INTO `coldroomtemperatures`
@@ -458,4 +457,40 @@ VALUES
                 SELECT MAX(`ColdRoomTemperatureID`) FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5
             )";
     mysqli_query($dbconn, $query2);
+}
+
+function GetChiller5($dbconn){
+    $query1 = "SELECT `Temperature` FROM `coldroomtemperatures` WHERE `ColdRoomSensorNumber` = 5 LIMIT 1";
+    $result = mysqli_query($dbconn, $query1);
+    $temp = mysqli_fetch_assoc($result);
+    $faketemp = $temp['Temperature'] - 40;
+    return $faketemp;
+
+
+}
+//Toenen van stockitemID quantity (Meest 3 verkochte producten).
+
+function meestVerkochtProduct($limit, $databaseConnection){
+    $Query = "
+        SELECT StockItemID, SUM(quantity) AS totalQuantity
+        FROM orderlines
+        GROUP BY StockItemID 
+        ORDER BY totalQuantity DESC
+        LIMIT ?;
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $limit);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+
+    $meestVerkocht = [];
+
+    while ($row = mysqli_fetch_assoc($Result)) {
+        $meestVerkocht[] = $row;
+    }
+
+    mysqli_stmt_close($Statement);
+
+    return $meestVerkocht;
 }

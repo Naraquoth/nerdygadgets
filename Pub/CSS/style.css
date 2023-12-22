@@ -128,10 +128,10 @@ ul#ul-class-navigation li {
 #StockItemFrameRight {
     float: right;
     text-align: right;
-    margin-right: 10px;
-    margin-top: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     right: 0;
     top: 0;
 }
@@ -206,7 +206,7 @@ ul#ul-class-navigation li {
     margin-top:10px;
     border: 1px solid;
     font-family: pt-sans, sans-serif;
-    font-size: 20px;
+    font-size: 16px;
 }
 #StockItemSpecifications {
     background-color: rgba(35, 40, 47, 0.8);
@@ -217,7 +217,7 @@ ul#ul-class-navigation li {
     margin-top:10px;
     border: 1px solid;
     font-family: pt-sans, sans-serif;
-    font-size: 20px;
+    font-size: 16px;
 }
 .Labels {
     margin-bottom: 0;
@@ -479,4 +479,38 @@ ul#ul-class-price li {
     background: rgb(36, 41, 143);
     border: 1px rgb(98, 158, 255) solid;
     color: #fff;
+}
+
+.MeestGekochteContainer {
+    width: 100%;
+    margin: 20px auto; 
+    text-align: center; 
+}
+
+.MeestGekochtProduct {
+    display: inline-block; 
+    margin-right: 20px; 
+}
+
+.ProductInfo {
+    text-align: center; 
+}
+
+.ImageFrame {
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px; 
+}
+
+.ArticleHeader {
+    text-align: left; 
+}
+
+.StockItemNameViewSize {
+    font-size: 20px; 
+}
+
+.StockItemPriceText {
+    font-size: 16px; 
 }
