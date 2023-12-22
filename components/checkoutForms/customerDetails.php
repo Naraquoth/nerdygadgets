@@ -1,7 +1,7 @@
 <div>
 <!-- klant gegevnes -->
     <label for="email">Email-Address</label>
-    <input type="email" name="email" disabled value="<?php echo 'test@test.test'?>">
+    <input type="email" name="email" disabled value="<?php echo $people["EmailAddress"]?>">
     <label for="naam">Naam</label>
     <input type="text" name="naam" disabled value="<?php echo $customer["CustomerName"]?>">
     <label for="telefoonnummer">Telefoonnummer</label>
