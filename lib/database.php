@@ -444,6 +444,7 @@ function changeInventoryByOrderId($orderId, $dbconn){
 
 }
 
+<<<<<<< HEAD
 
 function insertSensorData($sensorId, $tempratuur, $datetime, $dbconn){
     $dateTimeNow = date("Y-m-d H:i:s");
@@ -470,3 +471,31 @@ function GetChiller5($dbconn){
 
 
 }
+=======
+//Toenen van stockitemID quantity (Meest 3 verkochte producten).
+
+function meestVerkochtProduct($limit, $databaseConnection){
+    $Query = "
+        SELECT StockItemID, SUM(quantity) AS totalQuantity
+        FROM orderlines
+        GROUP BY StockItemID 
+        ORDER BY totalQuantity DESC
+        LIMIT ?;
+    ";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $limit);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+
+    $meestVerkocht = [];
+
+    while ($row = mysqli_fetch_assoc($Result)) {
+        $meestVerkocht[] = $row;
+    }
+
+    mysqli_stmt_close($Statement);
+
+    return $meestVerkocht;
+}
+>>>>>>> Meest-gekochte-producten
