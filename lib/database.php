@@ -1,5 +1,6 @@
 <!-- dit bestand bevat alle code die verbinding maakt met de database -->
 <?php
+require_once "./lib/blobFuncties.php";
 
 
 function connectToDatabase() {
@@ -231,7 +232,7 @@ function getSliderID($databaseConnection) {
 
 function getPeopleByEmail($emailAddress, $databaseConnection) {
     $Query = "
-                SELECT PersonID, EmailAddress
+                SELECT PersonID, EmailAddress, HashedPassword
                 FROM people
                 WHERE EmailAddress = ? 
                 LIMIT 1";
@@ -259,23 +260,22 @@ function getPeopleById($id, $databaseConnection) {
     return $People;
 }
 
-function createNewPeople($personName, $emailAddress, $phoneNumber, $databaseConnection) {
+function createNewPeople($personName, $emailAddress, $hasedPassword, $phoneNumber, $databaseConnection) {
     $dateTimeNow = date("Y-m-d H:i:s");
     $Query = "
                 INSERT INTO `people` 
                 (`FullName`, `PreferredName`, `SearchName`, `IsPermittedToLogon`, `LogonName`, `IsExternalLogonProvider`, `HashedPassword`, `IsSystemUser`, `IsEmployee`, `IsSalesperson`, `UserPreferences`, 
                 `PhoneNumber`, `FaxNumber`, `EmailAddress`, `Photo`, `CustomFields`, `OtherLanguages`, `LastEditedBy`, `ValidFrom`, `ValidTo`) 
                 VALUES 
-                (?, ?, ?, 0, 'NO LOGON', 0, NULL, 0, 0, 0, NULL, ?, NULL, ?, NULL, NULL, NULL, 1, ?, '9999-12-31 23:59:59.000000')";
+                (?, ?, ?, 0, 'NO LOGON', 0, ?, 0, 0, 0, NULL, ?, NULL, ?, NULL, NULL, NULL, 1, ?, '9999-12-31 23:59:59.000000')";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
-    $Statement->bind_param("ssssss", $personName, $personName, $personName, $phoneNumber,  $emailAddress, $dateTimeNow);
+    $Statement->bind_param("sssssss", $personName, $personName, $personName, $hasedPassword, $phoneNumber,  $emailAddress, $dateTimeNow);
     mysqli_stmt_execute($Statement);
     return mysqli_insert_id($databaseConnection);
 }
 
 // Customers
-
 function getCustomerByPeopleID($id, $databaseConnection) {
     $Query = "
     SELECT CU.CustomerID, CU.CustomerName, CU.PhoneNumber, CU.PostalPostalCode, CU.DeliveryAddressLine1, CU.DeliveryAddressLine2, CI.CityName
