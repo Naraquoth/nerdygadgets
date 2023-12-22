@@ -123,9 +123,6 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                                 } else {
                                     print $SpecText;
                                 }
-<<<<<<< HEAD
-                            } else {
-                                print $SpecText;
                             }
                             ?>
                         </td>
@@ -144,12 +141,6 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
 
                         </td>
                     </tr><?php } ?>
-=======
-                                ?>
-                            </td>
-                        </tr>
-                    <?php } ?>
->>>>>>> Meest-gekochte-producten
                 </table><?php
                     } else { ?>
 
@@ -202,14 +193,13 @@ $StockItemImage = getStockItemImage($_GET['id'], $databaseConnection);
                 </div>
             </div>
     <?php
-        }
+        }else {
+            ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
     }
     ?>
 </div>
     <?php
-    } else {
-    ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
-                                                                                } ?>
+    } ?>
 
 
 <?php

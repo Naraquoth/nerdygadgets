@@ -443,9 +443,6 @@ function changeInventoryByOrderId($orderId, $dbconn){
     }
 
 }
-
-<<<<<<< HEAD
-
 function insertSensorData($sensorId, $tempratuur, $datetime, $dbconn){
     $dateTimeNow = date("Y-m-d H:i:s");
     $query1 = "INSERT INTO `coldroomtemperatures`
@@ -471,7 +468,6 @@ function GetChiller5($dbconn){
 
 
 }
-=======
 //Toenen van stockitemID quantity (Meest 3 verkochte producten).
 
 function meestVerkochtProduct($limit, $databaseConnection){
@@ -498,4 +494,3 @@ function meestVerkochtProduct($limit, $databaseConnection){
 
     return $meestVerkocht;
 }
->>>>>>> Meest-gekochte-producten

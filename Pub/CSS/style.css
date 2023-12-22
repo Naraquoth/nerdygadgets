@@ -483,34 +483,34 @@ ul#ul-class-price li {
 
 .MeestGekochteContainer {
     width: 100%;
-    margin: 20px auto; /* Center the container horizontally */
-    text-align: center; /* Center the items within the container */
+    margin: 20px auto; 
+    text-align: center; 
 }
 
 .MeestGekochtProduct {
-    display: inline-block; /* Display products next to each other */
-    margin-right: 20px; /* Adjust the spacing between products */
+    display: inline-block; 
+    margin-right: 20px; 
 }
 
 .ProductInfo {
-    text-align: center; /* Center the information underneath */
+    text-align: center; 
 }
 
 .ImageFrame {
     background-size: cover;
     width: 100px;
     height: 100px;
-    margin-bottom: 10px; /* Adjust the spacing between image and information */
+    margin-bottom: 10px; 
 }
 
 .ArticleHeader {
-    text-align: left; /* Align the text to the left */
+    text-align: left; 
 }
 
 .StockItemNameViewSize {
-    font-size: 20px; /* You can adjust the font size here */
+    font-size: 20px; 
 }
 
 .StockItemPriceText {
-    font-size: 16px; /* You can adjust the font size here */
+    font-size: 16px; 
 }
