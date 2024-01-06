@@ -22,6 +22,8 @@ foreach($cart as $i => $aantal){
 <h1 class="text-3xl font-bold">Checkout</h1>
 <br>
 <form method="post" >
+    <!-- Dit is een button die niet zichtbaar is, en er voor zorgt dat je niet met enter kan submitten -->
+    <button type="submit" disabled style="display: none" aria-hidden="true"></button> 
 <div class="w-full grid grid-cols-5 gap-4">
     <div class=" col-span-3 [&>input]:text-black">
         
