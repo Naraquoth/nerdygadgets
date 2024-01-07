@@ -12,8 +12,6 @@ if(isset($_POST["logout-submit"])){
 
 
 if (!isset($_SESSION["userID"])){
-    
-
     ?>
     
     <form method="post">
@@ -22,31 +20,42 @@ if (!isset($_SESSION["userID"])){
     <div class=" w-72 mx-auto [&>input]:text-black">
         
     <?php
-
     require_once "./components/account.php";
     ?>
     </div>
     </form>
     <?php
 } else {
-    $people = getPeopleById($_SESSION["userID"], $databaseConnection)[0];
+    if (!isset($_SESSION["people"]) || !isset($_SESSION["customer"])) {
+        $_SESSION["people"] = getPeopleById($_SESSION["userID"], $databaseConnection)[0];
+        $_SESSION["customer"] = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
+    }
+    $people = $_SESSION["people"];
+    $customer = $_SESSION["customer"];
+
     require_once "./lib/adminCheck.php";
     ?>
-    <form method="post" class="container [&>div]:w-full grid [&>div>a]:mx-auto grid-flow-col">
-            <div class="">
+    <head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    </head>
+    <form method="post" class="container [&>div]:w-full grid [&>div>a]:mx-auto grid-flow-col mt-4 font-bold">
+            <div>
+                <a href="/account.php?page=orders">Orders</a>
+            </div>
+            <div>
                 <a href="/account.php?page=gegevens">Gegevens</a>
             </div>
         <?PHP
         if (adminCheck($people)){
             ?>
-                <div class="">
+                <div>
                     <a href="/account.php?page=viewbanner">Banner</a>
                 </div>
             <?PHP
         }
 
         ?>
-            <div class="">
+            <div>
                 <button type="submit" name="logout-submit">
                     Logout
                 </button>
@@ -61,9 +70,13 @@ if (!isset($_SESSION["userID"])){
         $page = $_GET["page"];
     }
     switch ($page) {
+    case "orders":
+        require_once "./components/myAccount/orders.php";
+        break;
+    case "order":
+        require_once "./components/myAccount/order.php";
+        break;
     case "gegevens":
-        $customer = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
-        
         require_once "./components/checkoutForms/customerDetails.php";
         break;
     case "viewbanner":
@@ -76,9 +89,11 @@ if (!isset($_SESSION["userID"])){
         require_once "./components/admin/banner/editbanner.php";
         break;
     default:
-        echo "Welkom op uw accountpagina. ";
+        require_once "./components/myAccount/orders.php";
+        break;
     }
 }
 echo "</div>";
+echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>';
 require_once "./components/footer.php";
 ?>

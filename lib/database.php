@@ -338,9 +338,24 @@ function createNewCustomer($peopleID, $personName, $phoneNumber, $deliveryaddres
 
 function getOrderByCustomerId($id, $databaseConnection) {
     $Query = "
-                SELECT OrderID, BackorderOrderID, OrderDate, ExpectedDeliveryDate 
+                SELECT OrderID, BackorderOrderID, OrderDate, ExpectedDeliveryDate, PickedByPersonID , DeliveryInstructions
                 FROM `orders`
-                WHERE `CustomerID` = ?";
+                WHERE `CustomerID` = ?
+                ORDER BY OrderID DESC";
+
+    $Statement = mysqli_prepare($databaseConnection, $Query);
+    mysqli_stmt_bind_param($Statement, "i", $id);
+    mysqli_stmt_execute($Statement);
+    $Result = mysqli_stmt_get_result($Statement);
+    $Order = mysqli_fetch_all($Result, MYSQLI_ASSOC);
+    return $Order;
+}
+
+function getOrderById($id, $databaseConnection) {
+    $Query = "
+                SELECT OrderID, BackorderOrderID, OrderDate, ExpectedDeliveryDate, PickedByPersonID , DeliveryInstructions, CustomerID
+                FROM `orders`
+                WHERE `OrderID` = ?";
 
     $Statement = mysqli_prepare($databaseConnection, $Query);
     mysqli_stmt_bind_param($Statement, "i", $id);
@@ -411,7 +426,7 @@ function createNewOrder($customerID, $userID, $cartItemsArray, $dbConn) {
 
 function getOrderDetailsByOrderId($id, $databaseConnection) {
     $Query = "
-                SELECT ol.StockItemID, si.StockItemName, ol.Quantity, ol.UnitPrice, ol.TaxRate, ol.PickedQuantity, ((ol.UnitPrice*(1+(ol.TaxRate/100)))*ol.PickedQuantity) AS TotalItemPrice
+                SELECT ol.StockItemID, si.StockItemName, ol.Quantity, ol.UnitPrice, ol.TaxRate, ol.PickedQuantity
                 FROM `orderlines` AS ol
                 JOIN `stockitems` AS si ON ol.StockItemID = si.StockItemID
                 WHERE ol.OrderID = ?";

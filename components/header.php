@@ -26,7 +26,7 @@ require_once "./lib/cartfuncties.php";
     <link rel="stylesheet" href="Pub/CSS/typekit.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="dark">
 <div class="Background">
     <div class="row" id="Header">
         <div class="col-2"><a href="./" id="LogoA">
