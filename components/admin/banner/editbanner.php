@@ -68,6 +68,6 @@ if(isset($_POST['update'])){
 
     if($UpdateSlider){
         echo "<script>alert('Slider has been updated')</script>";
-        echo "<script>window.open('/account.php?page=viewbanner.php', '_self')</script>"; 
+        echo "<script>window.open('/account.php?page=viewbanner', '_self')</script>"; 
     }
 }

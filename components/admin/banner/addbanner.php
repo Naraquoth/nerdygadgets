@@ -48,7 +48,7 @@ if(isset($_POST['Submit'])){
 
     if($insertSlider){
         echo "<script>alert('Slider has been inserted')</script>";
-        echo "<script>window.open('viewbanner.php', '_self')</script>";
+        echo "<script>window.open('/account.php?page=viewbanner', '_self')</script>";
     }
 }
 
