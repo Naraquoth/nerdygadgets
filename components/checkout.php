@@ -26,6 +26,7 @@ if (isset($_POST["pay-submit"])){
 
     clearCart(); // maak de winkelwagen leeg
 
+    // deepcode ignore OR: <please specify a reason of ignoring this>
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
     die();
     

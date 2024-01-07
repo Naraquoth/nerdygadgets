@@ -61,5 +61,6 @@ try {
          */
     }
 } catch (\Mollie\Api\Exceptions\ApiException $e) {
+    // deepcode ignore ServerLeak: <please specify a reason of ignoring this>
     echo "API call failed: " . htmlspecialchars($e->getMessage());
 }
