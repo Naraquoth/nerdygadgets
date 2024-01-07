@@ -35,9 +35,7 @@ if (!isset($_SESSION["userID"])){
 
     require_once "./lib/adminCheck.php";
     ?>
-    <head>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
-    </head>
+    
     <form method="post" class="container [&>div]:w-full grid [&>div>a]:mx-auto grid-flow-col mt-4 font-bold">
             <div>
                 <a href="/account.php?page=orders">Orders</a>
@@ -94,6 +92,5 @@ if (!isset($_SESSION["userID"])){
     }
 }
 echo "</div>";
-echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>';
 require_once "./components/footer.php";
 ?>

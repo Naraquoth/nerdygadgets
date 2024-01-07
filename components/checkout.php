@@ -12,7 +12,6 @@ if (!isset($_SESSION["CustomerDetails"])){
    $_SESSION["CustomerDetails"] = getCustomerByPeopleID($_SESSION["userID"], $databaseConnection)[0];
 }
 $customer = $_SESSION["CustomerDetails"];
-print_r($customer);
 
 if (isset($_POST["pay-submit"])){
     require_once "./lib/betaalfuncties.php";
