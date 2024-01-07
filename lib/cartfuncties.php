@@ -27,3 +27,7 @@ function addProductToCart($stockItemID){
     saveCart($cart);                            // werk de "gedeelde" $_SESSION["cart"] bij met de bijgewerkte cart
 }
 
+function clearCart(){
+    $cart = array();                            // maak een lege array
+    saveCart($cart);                            // werk de "gedeelde" $_SESSION["cart"] bij met de lege cart
+}

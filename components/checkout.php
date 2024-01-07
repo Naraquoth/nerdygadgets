@@ -24,7 +24,7 @@ if (isset($_POST["pay-submit"])){
 
     $payment = createPayment($amount, $_POST["issuer"], $orderid);
 
-    session_destroy();
+    clearCart(); // maak de winkelwagen leeg
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
     die();

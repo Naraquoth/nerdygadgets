@@ -21,7 +21,7 @@ function createPayment($amount, $selectedIssuerId, $orderId) {
         ],
         "method" => \Mollie\Api\Types\PaymentMethod::IDEAL,
         "description" => "Order #{$orderId}",
-        "redirectUrl" => $_ENV["WEB_URL"] . "/success.php?order=" . $orderId,
+        "redirectUrl" => $_ENV["WEB_URL"] . "/account.php?page=order&nr=" . $orderId,
         "webhookUrl"  => $_ENV["WEB_URL"] . "/webhook.php",
         "metadata" => [
             "order_id" => $orderId,

@@ -24,7 +24,7 @@ if (isset($_POST['edit-item'])) {
 
 // als je de winkelwagen leeg maakt
 if (isset($_POST['delete-shopping-list-session'])) {
-    session_destroy();  // verwijder de sessie
+    clearCart(); // maak de winkelwagen leeg
     header("Location: cart.php"); // refresh de pagina
 }
 $totaalPrijs = 0; // maak een variable aan voor de totaal prijs
