@@ -17,3 +17,6 @@
     <label for="woonplaats">Woonplaats</label>
     <input type="text" name="woonplaats" disabled value="<?php echo $customer["CityName"]?>">
 </div>
+
+
+

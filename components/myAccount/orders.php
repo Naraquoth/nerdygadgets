@@ -33,7 +33,8 @@ if (count($orders) == 0) {
             foreach ($orders as $order) {
 
             ?>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 hover:cursor-pointer" onclick='window.location.href = "/account.php?page=order&nr=<?php echo $order["OrderID"] ?>"'>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 hover:cursor-pointer" 
+            onclick='window.location.href = "/account.php?page=order&nr=<?php echo $order["OrderID"] ?>"'>
                 
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?php echo $order["OrderDate"] ?>
