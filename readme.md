@@ -1,16 +1,16 @@
 # Om te beginnen:
 
-## 1. Instaleer de database.
+## 1. Installeer de database
 
-## 2. Coppy .env.example naar .env en vul juiste gegevens in.
+## 2. Copy .env.example naar .env en vul juiste gegevens in
 
 ## 3. run: composer install
 
-# Om payment tegebruiken lokaal run: 
+# Om payment lokaal te gebruiken, run: 
 
 ngrok http --host-header=localhost 80 
 
-Vul url in de .env.
+Vul url in de .env
 
 
 
@@ -20,7 +20,7 @@ Vul url in de .env.
 
 dit zijn de sql commando's die je moet uitvoeren voor de trigger's
 
-Trigger voor coldroomtempratures
+Trigger voor coldroom temperatures
 
 ```sql
 DELIMITER //
